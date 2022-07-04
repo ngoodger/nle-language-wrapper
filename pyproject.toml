@@ -1,0 +1,34 @@
+[tool.black]
+line-length = 88
+target-version = ['py37']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+)/
+'''
+
+[tool.isort]
+force_single_line = true
+profile = "black"
+
+
+[tool.pylint.messages_control]
+max-line-length = 88
+disable = [
+  "missing-function-docstring",
+  "missing-module-docstring",
+  "missing-class-docstring",
+  "import-error",
+  "no-name-in-module",
+  "redefined-outer-name",
+  ]
+
+
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
