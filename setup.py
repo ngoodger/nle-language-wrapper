@@ -40,12 +40,15 @@ class CMakeBuild(build_ext.build_ext):
         build_cmd = ["cmake", "--build", ".", "--parallel"]
         install_cmd = ["cmake", "--install", "."]
 
-        subprocess.check_call(
-            ["python", "-m", "setup", "build"], cwd=f"{source_path}/nle"
-        )
-        subprocess.check_call(cmake_cmd, cwd=self.build_temp)
-        subprocess.check_call(build_cmd, cwd=self.build_temp)
-        subprocess.check_call(install_cmd, cwd=self.build_temp)
+        try:
+            subprocess.check_call(
+                ["python", "-m", "setup", "build"], cwd=f"{source_path}/nle"
+            )
+            subprocess.check_call(cmake_cmd, cwd=self.build_temp)
+            subprocess.check_call(build_cmd, cwd=self.build_temp)
+            subprocess.check_call(install_cmd, cwd=self.build_temp)
+        except subprocess.CalledProcessError:
+            sys.exit(1)
 
 
 packages = [
@@ -83,6 +86,7 @@ if __name__ == "__main__":
         cmdclass={"build_ext": CMakeBuild},
         setup_requires=["pybind11>=2.9"],
         install_requires=["pybind11>=2.9", "numpy>=1.21.0", "gym<=0.23", "nle>=0.8.1"],
+        tests_require=['pytest>=7.0.1'],
         extras_require=extras_deps,
         python_requires=">=3.7",
         classifiers=[
