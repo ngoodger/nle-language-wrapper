@@ -226,6 +226,11 @@ class NLELanguageWrapper(Wrapper):
         return self.nle_obsv_to_language(obsv)
 
     def __init__(self, env, use_language_action=True):
+        """Initialize the wrapper
+        Args:
+            env (nle.env.NLE): NLE based environment to be wrapped
+            use_language_action(bool): Use language action or discrete integer actions
+        """
         super().__init__(env)
         assert isinstance(env, NLE), "Only NLE environments are supported"
         missing_obsv_keys = self.REQUIRED_NLE_OBSV_KEYS.difference(
