@@ -5,6 +5,7 @@ import pathlib
 import subprocess
 import sys
 from distutils import sysconfig
+import shutil
 
 import setuptools
 from setuptools.command import build_ext
@@ -22,9 +23,7 @@ class CMakeBuild(build_ext.build_ext):
             .parent.joinpath("nle_language_wrapper")
             .resolve()
         )
-
         os.makedirs(self.build_temp, exist_ok=True)
-
         cmake_cmd = [
             "cmake",
             str(source_path),
@@ -36,23 +35,26 @@ class CMakeBuild(build_ext.build_ext):
             f"-DPYTHON_INCLUDE_DIR={sysconfig.get_python_inc()}",
             f"-DPYTHON_LIBRARY={sysconfig.get_config_var('LIBDIR')}",
         ]
-
         build_cmd = ["cmake", "--build", ".", "--parallel"]
         install_cmd = ["cmake", "--install", "."]
+        subprocess.check_call(
+            ["python", "-m", "setup", "build"], cwd=f"{source_path}/nle"
+        )
+        libnethack_path = list(pathlib.Path('./nle/build').glob('**/libnethack.so'))[0]
+        shutil.copy(libnethack_path, pathlib.Path("./libnethack.so"))
 
-        try:
-            subprocess.check_call(
-                ["python", "-m", "setup", "build"], cwd=f"{source_path}/nle"
-            )
-            subprocess.check_call(cmake_cmd, cwd=self.build_temp)
-            subprocess.check_call(build_cmd, cwd=self.build_temp)
-            subprocess.check_call(install_cmd, cwd=self.build_temp)
-        except subprocess.CalledProcessError:
-            sys.exit(1)
+        subprocess.check_call(cmake_cmd, cwd=self.build_temp)
+        subprocess.check_call(build_cmd, cwd=self.build_temp)
+        subprocess.check_call(install_cmd, cwd=self.build_temp)
 
 
 packages = [
     "nle_language_wrapper",
+    "nle_language_wrapper.agents",
+    "nle_language_wrapper.agents.sample_factory",
+    "nle_language_wrapper.scripts",
+    "nle_language_wrapper.tests",
+    "nle_language_wrapper.wrappers",
 ]
 
 extras_deps = {
@@ -74,7 +76,7 @@ if __name__ == "__main__":
 
     setuptools.setup(
         name=PACKAGE_NAME,
-        version="0.0.1",
+        version="0.0.19",
         description=("Language Wrapper for the NetHack Learning Environment (NLE) "),
         long_description=long_description,
         long_description_content_type="text/markdown",
@@ -82,10 +84,12 @@ if __name__ == "__main__":
         url="https://github.com/ngoodger/nle-language-wrapper",
         license="MIT License",
         packages=packages,
+        package_data={'': ['libnethack.so']},
+        include_package_data=True,
         ext_modules=[setuptools.Extension("nle_language_wrapper", sources=[])],
         cmdclass={"build_ext": CMakeBuild},
         setup_requires=["pybind11>=2.9"],
-        install_requires=["pybind11>=2.9", "numpy>=1.21.0", "gym<=0.23", "nle>=0.8.1"],
+        install_requires=["pybind11>=2.9", "numpy>=1.21.0", "gym>=0.15", "nle>=0.8.1"],
         tests_require=['pytest>=7.0.1'],
         extras_require=extras_deps,
         python_requires=">=3.7",
