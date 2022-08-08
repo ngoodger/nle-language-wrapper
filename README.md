@@ -124,7 +124,8 @@ python nle_language_wrapper/agents/sample_factory/train.py \
 --algo APPO \
 --batch_size 2048 \
 --num_envs_per_worker 24 \
---num_worker 8
+--num_workers 8 \
+--reward_scale 0.1
 ```
 
 ## Usage
