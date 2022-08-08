@@ -238,9 +238,9 @@ class NLELanguageWrapper(Wrapper):
         self.use_language_action = use_language_action
         self.nle_language = NLELanguageObsv()
         self.nle_action_index_map = {
-            nle_action: self.env.actions.index(nle_action)
+            nle_action: self.env._actions.index(nle_action)
             for nle_action, _ in self.nle_action_map.items()
-            if nle_action in self.env.actions
+            if nle_action in self.env._actions
         }
 
         if self.use_language_action:
