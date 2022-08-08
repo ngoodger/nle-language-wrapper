@@ -9,7 +9,17 @@ def main(nethack_env_name):
     """
     Play a NLE based environment using the nle-language-wrapper.
     """
-    nle_env = gym.make(nethack_env_name)
+    nle_env = gym.make(
+        nethack_env_name,
+        observation_keys=[
+            "glyphs",
+            "blstats",
+            "tty_chars",
+            "inv_letters",
+            "inv_strs",
+            "tty_cursor",
+        ],
+    )
     env = NLELanguageWrapper(nle_env)
     obsv = env.reset()
     total_reward = 0.0
