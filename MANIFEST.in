@@ -1,0 +1,25 @@
+include CMakeLists.txt
+recursive-include src *
+recursive-include pybind11 *
+recursive-exclude build *
+
+#nle
+include nle/version.txt
+
+include nle/CMakeLists.txt
+recursive-include nle/doc *
+recursive-include nle/dat *
+recursive-include nle/DEVEL *
+recursive-include nle/include *
+recursive-include nle/src *
+recursive-include nle/sys *
+recursive-include nle/util *
+recursive-include nle/win/rl *
+recursive-include nle/win/share *
+recursive-include nle/win/tty *
+recursive-include nle/third_party *
+
+recursive-exclude nle/build *
+exclude nle/nle/dashboard
+exclude nle/nle/scripts/nh-clean-install.sh
+exclude nle/nle/scripts/line-changed.sh
