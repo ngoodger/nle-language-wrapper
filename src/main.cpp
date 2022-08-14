@@ -2,6 +2,7 @@
 
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
+#include <pybind11/cast.h>
 #include <stdio.h>
 #include <unistd.h>
 
@@ -48,15 +49,15 @@ namespace nle_language_obsv {
 class NLELanguageObsv {
  public:
   NLELanguageObsv(void);
-  py::str text_glyphs(py::array_t<int16_t> glyphs,
+  py::bytes text_glyphs(py::array_t<int16_t> glyphs,
                           py::array_t<int64_t> blstats);
-  py::str text_blstats(py::array_t<int64_t> blstats);
-  py::str text_inventory(py::array_t<uint8_t> inv_strs,
+  py::bytes text_blstats(py::array_t<int64_t> blstats);
+  py::bytes text_inventory(py::array_t<uint8_t> inv_strs,
                              py::array_t<uint8_t> inv_letters);
-  py::str text_cursor(py::array_t<int16_t> glyphs,
+  py::bytes text_cursor(py::array_t<int16_t> glyphs,
                           py::array_t<int64_t> blstats,
                           py::array_t<int64_t> tty_cursor);
-  py::str text_message(py::array_t<uint8_t> tty_chars);
+  py::bytes text_message(py::array_t<uint8_t> tty_chars);
 
  private:
   const std::set<std::string> cmap_floor{
@@ -806,7 +807,7 @@ void NLELanguageObsv::build_fullscreen_view_glyph_map() {
   }
 }
 
-py::str NLELanguageObsv::text_cursor(py::array_t<int16_t> glyphs,
+py::bytes NLELanguageObsv::text_cursor(py::array_t<int16_t> glyphs,
                                          py::array_t<int64_t> blstats,
                                          py::array_t<int64_t> tty_cursor) {
   py::buffer_info glyphs_buffer = glyphs.request();
@@ -854,10 +855,10 @@ py::str NLELanguageObsv::text_cursor(py::array_t<int16_t> glyphs,
     output = "";
   }
 
-  return py::str(PyUnicode_DecodeLatin1(output.data(), output.length(), nullptr));
+  return py::bytes(output);
 }
 
-py::str NLELanguageObsv::text_glyphs(py::array_t<int16_t> glyphs,
+py::bytes NLELanguageObsv::text_glyphs(py::array_t<int16_t> glyphs,
                                          py::array_t<int64_t> blstats) {
   py::buffer_info glyphs_buffer = glyphs.request();
   py::buffer_info blstats_buffer = blstats.request();
@@ -891,10 +892,10 @@ py::str NLELanguageObsv::text_glyphs(py::array_t<int16_t> glyphs,
     if (idx + 1 < (glyph_distance_direction.size())) output += "\n";
     idx++;
   }
-  return py::str(PyUnicode_DecodeLatin1(output.data(), output.length(), nullptr));
+  return py::bytes(output);
 }
 
-py::str NLELanguageObsv::text_inventory(py::array_t<uint8_t> inv_strs,
+py::bytes NLELanguageObsv::text_inventory(py::array_t<uint8_t> inv_strs,
                                             py::array_t<uint8_t> inv_letters) {
   py::buffer_info inv_strs_buffer = inv_strs.request();
   py::buffer_info inv_letters_buffer = inv_letters.request();
@@ -912,7 +913,7 @@ py::str NLELanguageObsv::text_inventory(py::array_t<uint8_t> inv_strs,
     if (inv_letters_data[i] == 0) break;
     output += inv_letter + ": " + inv_str + "\n";
   }
-  return py::str(PyUnicode_DecodeLatin1(output.data(), output.length(), nullptr));
+  return py::bytes(output);
 }
 
 std::pair<std::string, std::string> NLELanguageObsv::pos_to_str(int x, int y) {
@@ -984,7 +985,7 @@ int NLELanguageObsv::diagonal_distance(int dx, int dy) {
   return diagonal_steps;
 }
 
-py::str NLELanguageObsv::text_blstats(py::array_t<int64_t> blstats) {
+py::bytes NLELanguageObsv::text_blstats(py::array_t<int64_t> blstats) {
   py::buffer_info blstats_buffer = blstats.request();
   int64_t *blstats_data = reinterpret_cast<int64_t *>(blstats_buffer.ptr);
 
@@ -1105,7 +1106,7 @@ py::str NLELanguageObsv::text_blstats(py::array_t<int64_t> blstats) {
        "Level Number:" + std::to_string(blstats_data[24]) + "\n" +
        "Score:" + std::to_string(blstats_data[9]) + "\n" +
        "Alignment:" + alignment_str + "\n" + "Condition:" + condition);
-  return py::str(PyUnicode_DecodeLatin1(output.data(), output.length(), nullptr));
+  return py::bytes(output);
 }
 
 std::string NLELanguageObsv::trim(std::string input) {
@@ -1118,7 +1119,7 @@ std::string NLELanguageObsv::trim(std::string input) {
   return output;
 }
 
-py::str NLELanguageObsv::text_message(py::array_t<uint8_t> tty_chars) {
+py::bytes NLELanguageObsv::text_message(py::array_t<uint8_t> tty_chars) {
   py::buffer_info tty_chars_buffer = tty_chars.request();
   uint8_t *tty_chars_data = reinterpret_cast<uint8_t *>(tty_chars_buffer.ptr);
 
@@ -1147,7 +1148,7 @@ py::str NLELanguageObsv::text_message(py::array_t<uint8_t> tty_chars) {
       blank_row_count = 0;
     }
   }
-  return py::str(PyUnicode_DecodeLatin1(output.data(), output.length(), nullptr));
+  return py::bytes(output);
 }
 
 }  // namespace nle_language_obsv
