@@ -222,8 +222,6 @@ wait_action = 17
 obsv, reward, done, info = env.step(wait_action)
 ```
 
-For a detailed walkthrough of the environment see TODO notebook.
-
 ## Manual play
 To directly interact with an NLE or MiniHack environment run the following script.
 ```
