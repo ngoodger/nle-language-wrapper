@@ -116,7 +116,7 @@ def fake_nle_env(mocker):
     info = None
     nle_env.reset = mocker.MagicMock(return_value=obsv)
     nle_env.step = mocker.MagicMock(return_value=(obsv, reward, done, info))
-    nle_env.actions = [nethack_actions.CompassDirection.N]
+    nle_env._actions = [nethack_actions.CompassDirection.N]
     nle_env.observation_space = spaces.Dict(
         {
             "glyphs": spaces.Space(),
@@ -169,7 +169,7 @@ def fake_nethack_multiple_monsters_env(mocker):
     info = None
     nle_env.reset = mocker.MagicMock(return_value=obsv)
     nle_env.step = mocker.MagicMock(return_value=(obsv, reward, done, info))
-    nle_env.actions = [nethack_actions.CompassDirection.N]
+    nle_env._actions = [nethack_actions.CompassDirection.N]
     nle_env.observation_space = spaces.Dict(
         {
             "glyphs": spaces.Space(),
@@ -262,15 +262,15 @@ def test_step_invalid_action(real_nethack_env):
 
 
 def test_step_valid_action_not_supported(real_nethack_env):
-    real_nethack_env.actions = [
+    real_nethack_env._actions = [
         action
-        for action in list(real_nethack_env.actions)
+        for action in list(real_nethack_env._actions)
         if action != nethack_actions.Command.TRAVEL
     ]
 
     dut = NLELanguageWrapper(real_nethack_env)
     dut.reset()
-    dut.env.actions = list(dut.env.actions)
+    dut.env._actions = list(dut.env._actions)
     with pytest.raises(ValueError):
         dut.step("travel")
 
@@ -726,7 +726,7 @@ def test_plural_lava(fake_nle_env):
 
 def test_wrapper_only_works_with_nle_envs():
     with pytest.raises(AssertionError, match=r"Only NLE environments are supported"):
-        NLELanguageWrapper(None)
+        NLELanguageWrapper(gym.make("CartPole-v0"))
 
 
 def test_wrapper_requires_all_keys(real_nethack_env):
