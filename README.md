@@ -55,8 +55,83 @@ Message:
 Hello Agent, welcome to NetHack!  You are a neutral human Priestess.
 ```
 
-## Getting Started
+### Observations
+The environment converts the NLE observations: `glyphs`, `blstats`, `tty_chars`, `inv_letters`, `inv_strs` and `tty_cursor` to language equivalents.
 
+- `text_glyphs`: A compressed textual representation of the surroundings.
+```
+dark area far west
+vertical wall near east and southeast
+horizontal wall near south and southwest
+horizontal closed door near southsouthwest
+black onyx ring near westsouthwest
+doorway near west
+egg very near east
+horizontal wall adjacent north, northeast, and northwest
+tame little dog adjacent southwest
+```
+Corresponding to the following visual display
+```
+---------
+.....@.%|
+|...d...|
+|.......|
+|=......|
+----+----
+```
+- `text_message`: Current message.  Same as `message` from NLE however also includes menus when present.
+```
+Aloha Agent, welcome to NetHack!  You are a neutral female human Tourist.
+```
+- `text_blstats`: Text version of the bottom-line stats and auxiliary stats include with NLE.
+```
+Strength:11/11
+Dexterity:12
+Constitution:14
+Intelligence:16
+Wisdom:9
+Charisma:14
+Depth:1
+Gold:241
+HP:10/10
+Energy:2/2
+AC:10
+XP:1/0
+Time:1
+Position:48|2
+Hunger:Not Hungry
+Monster Level:0
+Encumbrance:Unemcumbered
+Dungeon Number:0
+Level Number:1
+Score:0
+Alignment:Neutral
+Condition:None
+```
+- `text_inventory`: Current inventory with letters.
+```
+$: 241 gold pieces
+a: 22 +2 darts (at the ready)
+b: 6 uncursed food rations
+c: 3 uncursed tripe rations
+d: an uncursed egg
+e: 2 uncursed fortune cookies
+f: 2 uncursed potions of extra healing
+g: 2 uncursed scrolls of magic mapping
+h: 2 blessed scrolls of magic mapping
+i: an uncursed +0 Hawaiian shirt (being worn)
+j: an expensive camera (0:68)
+k: an uncursed credit card
+```
+- `text_cursor`: Description of glyph currently under cursor.
+```
+Yourself a tourist
+```
+
+### Actions
+Actions are by default text actions like `wait`, `apply`, `north` ect.  The corresponding key-presses are supported as well, e.g. `west` is the same as `h` and `kick` is the same as `^d`. Alternatively the standard discrete action space from NLE can be used by passing `use_language_action=False` to the wrapper.
+
+## Getting Started
 
 ### Requirements 
 
@@ -95,7 +170,7 @@ python -m setup develop
 There is a [Sample Factory](https://github.com/alex-petrenko/sample-factory) based agent included achieving TODO reward after TODO steps.  This agent uses a small transformer model to encode the language observations for the policy model and value function model.  The algorithm used is Asynchronous Proximal Policy Optimization (APPO) described in [Sample Factory: Egocentric 3D Control from Pixels at 100000 FPS with Asynchronous Reinforcement Learning](https://arxiv.org/abs/2006.11751v2).
 
 ### Hardware Requirements
-The default configuration was tested on an Nvidia 3090 with 24Gbyte and a Ryzen 1700 CPU. Training runs at approximately 7k/FPS.  To train on less GPU memory a smaller model could be configured, or a smaller max token length or batch size could be used.
+The default configuration was tested on an Nvidia 3090 with 24Gbyte and a Ryzen 1700 CPU. Training runs at approximately 5k/FPS.  To train on less GPU memory a smaller model could be configured, or a smaller max token length or batch size could be used.
 ```
     --transformer_hidden_size" (default=64)
     --transformer_hidden_layers" (default=2)
@@ -110,7 +185,7 @@ There is a pre-trained agent included with the project.
 python nle_language_wrapper/agents/sample_factory/enjoy.py \
 --env nle_language_env \
 --encoder_custom nle_language_transformer_encoder \
---experiment nle_competition_language_agent \
+--experiment nle_language_agent \
 --algo APPO
 ```
 
@@ -120,7 +195,7 @@ To train a new agent simply run the following module and the set the experiment 
 python nle_language_wrapper/agents/sample_factory/train.py \
 --env nle_language_env \
 --encoder_custom nle_language_transformer_encoder \
---experiment my_experiment_1 \
+--experiment nle_language_agent_1 \
 --algo APPO \
 --batch_size 2048 \
 --num_envs_per_worker 24 \
@@ -130,7 +205,7 @@ python nle_language_wrapper/agents/sample_factory/train.py \
 
 ## Usage
 
-The wrapper can be used simply by instantiating the base environment from NLE or MiniHack and passing it to the wrapper constructor.  E.g. 
+The wrapper can be used simply by instantiating the base environment from NLE or MiniHack and passing it to the wrapper constructor.  E.g. From python
 ```
 import nle
 from nle_language_wrapper import  NLELanguageWrapper
@@ -150,7 +225,7 @@ obsv, reward, done, info = env.step(wait_action)
 For a detailed walkthrough of the environment see TODO notebook.
 
 ## Manual play
-
+To directly interact with an NLE or MiniHack environment run the following script.
 ```
 python -m nle_language_wrapper.scripts.play
 ```
