@@ -192,11 +192,17 @@ class NLELanguageWrapper(Wrapper):
         inv_letters = nle_obsv["inv_letters"]
         tty_chars = nle_obsv["tty_chars"]
         return {
-            "text_glyphs": self.nle_language.text_glyphs(glyphs, blstats).decode("latin-1"),
-            "text_message":  self.nle_language.text_message(tty_chars).decode("latin-1"),
+            "text_glyphs": self.nle_language.text_glyphs(glyphs, blstats).decode(
+                "latin-1"
+            ),
+            "text_message": self.nle_language.text_message(tty_chars).decode("latin-1"),
             "text_blstats": self.nle_language.text_blstats(blstats).decode("latin-1"),
-            "text_inventory":  self.nle_language.text_inventory(inv_strs, inv_letters).decode("latin-1"),
-            "text_cursor":  self.nle_language.text_cursor(glyphs, blstats, tty_cursor).decode("latin-1"),
+            "text_inventory": self.nle_language.text_inventory(
+                inv_strs, inv_letters
+            ).decode("latin-1"),
+            "text_cursor": self.nle_language.text_cursor(
+                glyphs, blstats, tty_cursor
+            ).decode("latin-1"),
         }
 
     def post_step(self, nle_obsv):

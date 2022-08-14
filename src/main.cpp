@@ -1,8 +1,8 @@
 /* Copyright (c) Nikolaj Goodger */
 
+#include <pybind11/cast.h>
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
-#include <pybind11/cast.h>
 #include <stdio.h>
 #include <unistd.h>
 
@@ -50,13 +50,13 @@ class NLELanguageObsv {
  public:
   NLELanguageObsv(void);
   py::bytes text_glyphs(py::array_t<int16_t> glyphs,
-                          py::array_t<int64_t> blstats);
+                        py::array_t<int64_t> blstats);
   py::bytes text_blstats(py::array_t<int64_t> blstats);
   py::bytes text_inventory(py::array_t<uint8_t> inv_strs,
-                             py::array_t<uint8_t> inv_letters);
+                           py::array_t<uint8_t> inv_letters);
   py::bytes text_cursor(py::array_t<int16_t> glyphs,
-                          py::array_t<int64_t> blstats,
-                          py::array_t<int64_t> tty_cursor);
+                        py::array_t<int64_t> blstats,
+                        py::array_t<int64_t> tty_cursor);
   py::bytes text_message(py::array_t<uint8_t> tty_chars);
 
  private:
@@ -808,8 +808,8 @@ void NLELanguageObsv::build_fullscreen_view_glyph_map() {
 }
 
 py::bytes NLELanguageObsv::text_cursor(py::array_t<int16_t> glyphs,
-                                         py::array_t<int64_t> blstats,
-                                         py::array_t<int64_t> tty_cursor) {
+                                       py::array_t<int64_t> blstats,
+                                       py::array_t<int64_t> tty_cursor) {
   py::buffer_info glyphs_buffer = glyphs.request();
   py::buffer_info blstats_buffer = blstats.request();
   py::buffer_info tty_cursor_buffer = tty_cursor.request();
@@ -859,7 +859,7 @@ py::bytes NLELanguageObsv::text_cursor(py::array_t<int16_t> glyphs,
 }
 
 py::bytes NLELanguageObsv::text_glyphs(py::array_t<int16_t> glyphs,
-                                         py::array_t<int64_t> blstats) {
+                                       py::array_t<int64_t> blstats) {
   py::buffer_info glyphs_buffer = glyphs.request();
   py::buffer_info blstats_buffer = blstats.request();
 
@@ -896,7 +896,7 @@ py::bytes NLELanguageObsv::text_glyphs(py::array_t<int16_t> glyphs,
 }
 
 py::bytes NLELanguageObsv::text_inventory(py::array_t<uint8_t> inv_strs,
-                                            py::array_t<uint8_t> inv_letters) {
+                                          py::array_t<uint8_t> inv_letters) {
   py::buffer_info inv_strs_buffer = inv_strs.request();
   py::buffer_info inv_letters_buffer = inv_letters.request();
   uint8_t *inv_strs_data = reinterpret_cast<uint8_t *>(inv_strs_buffer.ptr);
@@ -1164,7 +1164,6 @@ PYBIND11_MODULE(nle_language_obsv, m) {
            "Convert inventory to text description")
       .def("text_cursor", &nle_language_obsv::NLELanguageObsv::text_cursor,
            "Convert tty_cursor to text description")
-      .def("text_message", 
-          &nle_language_obsv::NLELanguageObsv::text_message,
+      .def("text_message", &nle_language_obsv::NLELanguageObsv::text_message,
            "Convert tty_chars to text message including menus");
 }
