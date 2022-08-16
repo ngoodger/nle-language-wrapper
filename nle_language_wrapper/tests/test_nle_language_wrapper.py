@@ -183,7 +183,7 @@ def fake_nethack_multiple_monsters_env(mocker):
     return nle_env
 
 
-def test_menu_fake(fake_nle_env):
+def test_message_spell_menu(fake_nle_env):
 
     menu = [
         "    Choose which spell to cast                               ",
@@ -211,6 +211,30 @@ def test_menu_fake(fake_nle_env):
         "Choose which spell to cast\n"
         "Name                 Level Category     Fail Retention\n"
         "a - healing                1   healing        0%      100%"
+    )
+    assert obsv["text_message"] == expected_menu
+
+
+def test_message_more(fake_nle_env):
+    things_that_are_here = [
+        " Things that are here:      ",
+        "a goblin corpse             ",
+        "an iron skull cap           ",
+        "--More--                    ",
+    ]
+    screen_map = [
+        "         -----------------------------------------|           ",
+        "         |               @                        |           ",
+    ]
+    # Fill with spaces for menu
+    tty_chars = strs_to_2d(things_that_are_here + screen_map, fill_value=32)
+
+    fake_nle_env.reset.return_value["tty_chars"] = tty_chars
+    dut = NLELanguageWrapper(fake_nle_env)
+    obsv = dut.reset()
+
+    expected_menu = (
+        "Things that are here:\n" "a goblin corpse\n" "an iron skull cap\n" "--More--"
     )
     assert obsv["text_message"] == expected_menu
 
@@ -755,5 +779,6 @@ def test_time_step(real_nethack_env):
         timeit.repeat(lambda: real_nethack_env.step(wait_action), number=100, repeat=10)
     )
     runtime = min(timeit.repeat(lambda: dut.step("wait"), number=100, repeat=10))
+    breakpoint()
     relative_slowdown = runtime / baseline_runtime
     assert relative_slowdown < 3.2
