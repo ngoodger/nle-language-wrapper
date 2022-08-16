@@ -167,7 +167,9 @@ python -m setup develop
 
 ## Agent
 
-There is a [Sample Factory](https://github.com/alex-petrenko/sample-factory) based agent included achieving TODO reward after TODO steps.  This agent uses a small transformer model to encode the language observations for the policy model and value function model.  The algorithm used is Asynchronous Proximal Policy Optimization (APPO) described in [Sample Factory: Egocentric 3D Control from Pixels at 100000 FPS with Asynchronous Reinforcement Learning](https://arxiv.org/abs/2006.11751v2).
+There is a [Sample Factory](https://github.com/alex-petrenko/sample-factory) based agent included achieving 730 reward after 1B frames.  This agent uses a small transformer model to encode the language observations for the policy model and value function model.  The algorithm used is Asynchronous Proximal Policy Optimization (APPO) described in [Sample Factory: Egocentric 3D Control from Pixels at 100000 FPS with Asynchronous Reinforcement Learning](https://arxiv.org/abs/2006.11751v2).
+
+![Reward Curves](media/reward_curves.png?raw=true)
 
 ### Hardware Requirements
 The default configuration was tested on an Nvidia 3090 with 24Gbyte and a Ryzen 1700 CPU. Training runs at approximately 5k/FPS.  To train on less GPU memory a smaller model could be configured, or a smaller max token length or batch size could be used.
