@@ -165,6 +165,32 @@ To update the library with changes to the C++ recompile by running
 python -m setup develop
 ```
 
+
+## Usage
+
+The wrapper can be used simply by instantiating the base environment from NLE or MiniHack and passing it to the wrapper constructor.  E.g. From python
+```
+import nle
+from nle_language_wrapper import  NLELanguageWrapper
+env = NLELanguageWrapper(gym.make("NetHackChallenge-v0"))
+obsv = env.reset()
+obsv, reward, done, info = env.step("wait")
+```
+
+Alternatively to utilize the discrete actions rather than language actions specify `use-text-action`.
+```
+env = NLELanguageWrapper(gym.make("NetHackChallenge-v0"),  use_language_action=text)
+obsv = env.reset()
+wait_action = 17
+obsv, reward, done, info = env.step(wait_action)
+```
+
+## Manual play
+To directly interact with an NLE or MiniHack environment run the following script.
+```
+python -m nle_language_wrapper.scripts.play
+```
+
 ## Agent
 
 There is a [Sample Factory](https://github.com/alex-petrenko/sample-factory) based agent included achieving 730 reward after 1B frames.  This agent uses a small transformer model to encode the language observations for the policy model and value function model.  The algorithm used is Asynchronous Proximal Policy Optimization (APPO) described in [Sample Factory: Egocentric 3D Control from Pixels at 100000 FPS with Asynchronous Reinforcement Learning](https://arxiv.org/abs/2006.11751v2).
@@ -204,31 +230,6 @@ python nle_language_wrapper/agents/sample_factory/train.py \
 --num_envs_per_worker 24 \
 --num_workers 8 \
 --reward_scale 0.1
-```
-
-## Usage
-
-The wrapper can be used simply by instantiating the base environment from NLE or MiniHack and passing it to the wrapper constructor.  E.g. From python
-```
-import nle
-from nle_language_wrapper import  NLELanguageWrapper
-env = NLELanguageWrapper(gym.make("NetHackChallenge-v0"))
-obsv = env.reset()
-obsv, reward, done, info = env.step("wait")
-```
-
-Alternatively to utilize the discrete actions rather than language actions specify `use-text-action`.
-```
-env = NLELanguageWrapper(gym.make("NetHackChallenge-v0"),  use_language_action=text)
-obsv = env.reset()
-wait_action = 17
-obsv, reward, done, info = env.step(wait_action)
-```
-
-## Manual play
-To directly interact with an NLE or MiniHack environment run the following script.
-```
-python -m nle_language_wrapper.scripts.play
 ```
 
 ## Licence
