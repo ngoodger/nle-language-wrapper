@@ -1,0 +1,73 @@
+diff --git a/nle_language_wrapper/tests/test_nle_language_wrapper.py b/nle_language_wrapper/tests/test_nle_language_wrapper.py
+index 623f563..ab7a3b8 100644
+--- a/nle_language_wrapper/tests/test_nle_language_wrapper.py
++++ b/nle_language_wrapper/tests/test_nle_language_wrapper.py
+@@ -738,6 +738,33 @@ def test_wrapper_requires_all_keys(real_nethack_env):
+         NLELanguageWrapper(real_nethack_env)
+ 
+ 
++def test_fix_more(fake_nle_env):
++    things_that_are_here = [
++        " Things that are here:      ",
++        "a goblin corpse             ",
++        "an iron skull cap           ",
++        "--More--                    "]
++    screen_map = [
++        "         -----------------------------------------|           ",
++        "         |               @                        |           ",
++    ]
++    # Fill with spaces for menu
++    tty_chars = strs_to_2d(things_that_are_here + screen_map, fill_value=32)
++
++
++    fake_nle_env.reset.return_value["tty_chars"] = tty_chars
++    dut = NLELanguageWrapper(fake_nle_env)
++    obsv = dut.reset()
++
++    expected_menu = (
++        "Things that are here:\n"
++        "a goblin corpse\n"
++        "an iron skull cap\n"
++        "--More--"
++    )
++    assert obsv["text_message"] == expected_menu
++
++
+ def test_time_reset(real_nethack_env):
+     dut = NLELanguageWrapper(real_nethack_env)
+     baseline_runtime = min(timeit.repeat(real_nethack_env.reset, number=100, repeat=10))
+diff --git a/setup.py b/setup.py
+index 02bde87..8e60ed7 100644
+--- a/setup.py
++++ b/setup.py
+@@ -76,7 +76,7 @@ if __name__ == "__main__":
+ 
+     setuptools.setup(
+         name=PACKAGE_NAME,
+-        version="0.0.20",
++        version="0.0.21",
+         description=("Language Wrapper for the NetHack Learning Environment (NLE) "),
+         long_description=long_description,
+         long_description_content_type="text/markdown",
+diff --git a/src/main.cpp b/src/main.cpp
+index 8e7d452..05efb6c 100644
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -1137,7 +1137,7 @@ py::bytes NLELanguageObsv::text_message(py::array_t<uint8_t> tty_chars) {
+ 
+     // End of menu
+     if (row_str.find("(end)") != std::string::npos) break;
+-
++    
+     if (row_str.size() == 0)
+       blank_row_count++;
+     else {
+@@ -1147,6 +1147,8 @@ py::bytes NLELanguageObsv::text_message(py::array_t<uint8_t> tty_chars) {
+       output += row_str;
+       blank_row_count = 0;
+     }
++    // End of more
++    if (row_str.find("--More--") != std::string::npos) break;
+   }
+   return py::bytes(output);
+ }

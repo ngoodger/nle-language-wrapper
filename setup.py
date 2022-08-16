@@ -76,7 +76,7 @@ if __name__ == "__main__":
 
     setuptools.setup(
         name=PACKAGE_NAME,
-        version="0.0.20",
+        version="0.0.21",
         description=("Language Wrapper for the NetHack Learning Environment (NLE) "),
         long_description=long_description,
         long_description_content_type="text/markdown",

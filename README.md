@@ -165,7 +165,7 @@ To update the library with changes to the C++ recompile by running
 python -m setup develop
 ```
 
-## TODO Agent
+## Agent
 
 There is a [Sample Factory](https://github.com/alex-petrenko/sample-factory) based agent included achieving TODO reward after TODO steps.  This agent uses a small transformer model to encode the language observations for the policy model and value function model.  The algorithm used is Asynchronous Proximal Policy Optimization (APPO) described in [Sample Factory: Egocentric 3D Control from Pixels at 100000 FPS with Asynchronous Reinforcement Learning](https://arxiv.org/abs/2006.11751v2).
 
