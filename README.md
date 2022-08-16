@@ -186,7 +186,8 @@ python nle_language_wrapper/agents/sample_factory/enjoy.py \
 --env nle_language_env \
 --encoder_custom nle_language_transformer_encoder \
 --experiment nle_language_agent \
---algo APPO
+--algo APPO \
+--fps 1
 ```
 
 ### Training the agent
