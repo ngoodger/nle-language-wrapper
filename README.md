@@ -133,6 +133,9 @@ Actions are by default text actions like `wait`, `apply`, `north` ect.  The corr
 
 ## Getting Started
 
+### Supported platforms
+The wrapper is tested on macOS 12.5 and Ubuntu 20.04.
+
 ### Requirements 
 
 Requires `python>=3.7` and `cmake>=3.15`.
@@ -145,6 +148,7 @@ Requires `python>=3.7` and `cmake>=3.15`.
  ```
  Alternatively, and for other platforms follow the instructions at https://cmake.org/install/
 
+On Ubuntu you may also require additional dependencies, follow the steps at https://github.com/facebookresearch/nle#installation.
 
 ### Installation
 
