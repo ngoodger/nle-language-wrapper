@@ -92,7 +92,7 @@ if __name__ == "__main__":
         install_requires=[
             "pybind11>=2.9",
             "numpy>=1.21.0",
-            "gym>=0.15",
+            "gym>=0.15,<=0.23",
             "nle>=0.8.1",
             "minihack>=0.1.3",
         ],
