@@ -1,3 +1,5 @@
+[![PyPI](https://img.shields.io/pypi/v/nle-language-wrapper.svg)](https://pypi.org/project/nle-language-wrapper)
+
 # Nethack Learning Environment Language Wrapper 
 
 Language Wrapper for the [Nethack Learning Environment (NLE)](https://github.com/facebookresearch/nle) and [MiniHack](https://github.com/facebookresearch/minihack)
