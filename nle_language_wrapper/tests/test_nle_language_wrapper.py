@@ -779,6 +779,5 @@ def test_time_step(real_nethack_env):
         timeit.repeat(lambda: real_nethack_env.step(wait_action), number=100, repeat=10)
     )
     runtime = min(timeit.repeat(lambda: dut.step("wait"), number=100, repeat=10))
-    breakpoint()
     relative_slowdown = runtime / baseline_runtime
     assert relative_slowdown < 3.2
