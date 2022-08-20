@@ -234,7 +234,10 @@ def test_message_more(fake_nle_env):
     obsv = dut.reset()
 
     expected_menu = (
-        "Things that are here:\n" "a goblin corpse\n" "an iron skull cap\n" "--More--"
+        "Things that are here:\n"
+        + "a goblin corpse\n"
+        + "an iron skull cap\n"
+        + "--More--"
     )
     assert obsv["text_message"] == expected_menu
 
