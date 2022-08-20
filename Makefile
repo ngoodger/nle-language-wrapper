@@ -24,4 +24,4 @@ format-cpp-check:
 	cpplint --filter -readability/braces src/main.cpp
 
 test:
-	pytest nle_language_wrapper/tests
+	pytest nle_language_wrapper/tests --cov .

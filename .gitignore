@@ -4,3 +4,4 @@ build/
 dist/
 *.so
 *.eggs
+.coverage
