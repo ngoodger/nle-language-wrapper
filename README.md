@@ -1,11 +1,14 @@
 [![PyPI](https://img.shields.io/pypi/v/nle-language-wrapper.svg)](https://pypi.org/project/nle-language-wrapper)
+[![Downloads](https://static.pepy.tech/personalized-badge/nle-language-wrapper?period=total&units=abbreviation&left_color=grey&right_color=green&left_text=Downloads%20Total)](https://pepy.tech/project/nle-language-wrapper)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 
 # Nethack Learning Environment Language Wrapper 
 
 Language Wrapper for the [Nethack Learning Environment (NLE)](https://github.com/facebookresearch/nle) and [MiniHack](https://github.com/facebookresearch/minihack)
 
 ## Description
-The wrapper inherits from the [Gym Wrapper](https://github.com/openai/gym/blob/9e66399b4ef04c1534c003641802e2ac1363e8a6/gym/core.py#L286-L421) and translates the non-language observations from NLE into similar language representations.  Actions can also be optionally provided in text form which are converted to the Discrete actions of the NLE.
+This wrapper inherits from the [Gym Wrapper](https://github.com/openai/gym/blob/9e66399b4ef04c1534c003641802e2ac1363e8a6/gym/core.py#L286-L421) Class and translates the non-language observations from [NLE](https://github.com/facebookresearch/nle) tasks into similar language representations.  Actions can also be optionally provided in text form which are converted to the Discrete actions of the NLE.
 
 ```
 Inventory:
@@ -58,7 +61,7 @@ Hello Agent, welcome to NetHack!  You are a neutral human Priestess.
 ```
 
 ### Observations
-The environment converts the NLE observations: `glyphs`, `blstats`, `tty_chars`, `inv_letters`, `inv_strs` and `tty_cursor` to language equivalents.
+The environment converts the NLE observations: `glyphs`, `blstats`, `tty_chars`, `inv_letters`, `inv_strs` and `tty_cursor` to text equivalents.
 
 - `text_glyphs`: A compressed textual representation of the surroundings.
 ```
@@ -154,19 +157,19 @@ On Ubuntu you may also require additional dependencies, follow the steps at http
 
 ### Installation
 
-To use the environment you can install from the PyPI.
+To use the environment you can install it directly from PyPI.
 ```
 pip install nle-language-wrapper
 ```
 
 ### Development
 
-For development on the environment clone the repository and install in development mode.
+For development on the wrapper clone the repository and install it in development mode.
 ```
 git clone https://github.com/ngoodger/nle-language-wrapper --recursive
 pip install -e ".[dev]"
 ```
-To update the library with changes to the C++ recompile by running 
+To update the library with changes to the C++ code recompile by running
 ```
 python -m setup develop
 ```
@@ -174,7 +177,7 @@ python -m setup develop
 
 ## Usage
 
-The wrapper can be used simply by instantiating the base environment from NLE or MiniHack and passing it to the wrapper constructor.  E.g. From python
+The wrapper can be used simply by instantiating a base environment from [NLE](https://github.com/facebookresearch/nle) or [MiniHack](https://github.com/facebookresearch/minihack) and passing it to the wrapper constructor.
 ```
 import nle
 from nle_language_wrapper import  NLELanguageWrapper
@@ -183,7 +186,7 @@ obsv = env.reset()
 obsv, reward, done, info = env.step("wait")
 ```
 
-Alternatively to utilize the discrete actions rather than language actions specify `use-text-action`.
+Alternatively to utilize the discrete actions rather than language actions specify `use-text-action=True`.
 ```
 env = NLELanguageWrapper(gym.make("NetHackChallenge-v0"),  use_language_action=text)
 obsv = env.reset()
@@ -192,29 +195,29 @@ obsv, reward, done, info = env.step(wait_action)
 ```
 
 ## Manual play
-To directly interact with an NLE or MiniHack environment run the following script.
+A script is provided select an NLE or MiniHack task and directly interact with an environment.
 ```
 python -m nle_language_wrapper.scripts.play
 ```
 
 ## Agent
 
-There is a [Sample Factory](https://github.com/alex-petrenko/sample-factory) based agent included achieving 730 reward after 1B frames.  This agent uses a small transformer model to encode the language observations for the policy model and value function model.  The algorithm used is Asynchronous Proximal Policy Optimization (APPO) described in [Sample Factory: Egocentric 3D Control from Pixels at 100000 FPS with Asynchronous Reinforcement Learning](https://arxiv.org/abs/2006.11751v2).
+An included [Sample Factory](https://github.com/alex-petrenko/sample-factory) based agent achieves 730 reward after 700M frames.  This agent uses a small transformer model to encode the language observations for the policy and value function models.  The algorithm used is Asynchronous Proximal Policy Optimization (APPO) described in [Sample Factory: Egocentric 3D Control from Pixels at 100000 FPS with Asynchronous Reinforcement Learning](https://arxiv.org/abs/2006.11751v2).
 
 ![Reward Curves](media/reward_curves.png?raw=true)
 
 ### Hardware Requirements
-The default configuration was tested on an Nvidia 3090 with 24Gbyte and a Ryzen 1700 CPU. Training runs at approximately 5k/FPS.  To train on less GPU memory a smaller model could be configured, or a smaller max token length or batch size could be used.
+The default configuration was tested on an Nvidia 3090 with 24Gbyte RAM and a Ryzen 1700 CPU. Training runs at approximately 4k/FPS.  To train on a GPU with less RAM a smaller model could be configured, or a smaller max token length, or batch size could be used.  These parameters can be passed when running the training script `nle_language_wrapper/agents/sample_factory/train.py`, e.g.
 ```
-    --transformer_hidden_size" (default=64)
-    --transformer_hidden_layers" (default=2)
-    --transformer_attention_heads (default=2)
-    --max_token_length (default=256)
-    --batch_size (default=1024)
+    --transformer_hidden_size 64
+    --transformer_hidden_layers 2
+    --transformer_attention_heads 2
+    --max_token_length 256
+    --batch_size 1024
 ```
 
 ### Running the agent
-There is a pre-trained agent included with the project.
+The pre-trained agent checkpoints are included in the `train_dir`.  Clone the repository and run the following script to test it.
 ```
 python nle_language_wrapper/agents/sample_factory/enjoy.py \
 --env nle_language_env \
@@ -225,7 +228,7 @@ python nle_language_wrapper/agents/sample_factory/enjoy.py \
 ```
 
 ### Training the agent
-To train a new agent simply run the following module and the set the experiment name to the desired value.
+To train a new agent simply run the following script and the set the experiment name to the desired value.
 ```
 python nle_language_wrapper/agents/sample_factory/train.py \
 --env nle_language_env \
