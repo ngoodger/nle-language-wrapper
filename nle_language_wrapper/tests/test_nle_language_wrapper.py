@@ -4,9 +4,9 @@ import gym
 import numpy as np
 import pytest
 from gym import spaces
-
 from nle.env import NLE
 from nle.nethack import actions as nethack_actions
+
 from nle_language_wrapper import NLELanguageWrapper
 
 

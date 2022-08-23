@@ -1,8 +1,8 @@
 from gym import Wrapper
 from gym import spaces
-
 from nle.env import NLE
 from nle.nethack import actions as nethack_actions
+
 from nle_language_wrapper.nle_language_obsv import NLELanguageObsv
 
 

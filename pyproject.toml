@@ -12,6 +12,7 @@ exclude = '''
 [tool.isort]
 force_single_line = true
 profile = "black"
+known_third_party = ["nle"]
 
 
 [tool.pylint.messages_control]

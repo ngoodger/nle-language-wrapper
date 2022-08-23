@@ -1,7 +1,7 @@
 import gym
 import minihack  # pylint: disable=unused-import
-
 import nle  # pylint: disable=unused-import
+
 from nle_language_wrapper import NLELanguageWrapper
 
 

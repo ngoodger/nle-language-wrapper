@@ -62,7 +62,7 @@ extras_deps = {
         "black>=22.6.0",
         "flake8>=4.0.1",
         "pytest>=7.1.2",
-        "pytest-cov>=3.0.0"
+        "pytest-cov>=3.0.0",
         "isort>=5.10.1",
     ],
     "agent": ["sample_factory>=1.121.4", "transformers>=4.17.0"],
