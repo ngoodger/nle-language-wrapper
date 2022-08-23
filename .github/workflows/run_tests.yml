@@ -1,6 +1,12 @@
-name: Lint Python
+name: Run Tests
 
 on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
   push:
     branches:
       - main
@@ -13,8 +19,8 @@ on:
       - "nle_language_wrapper/**.py"
 
 jobs:
-  check_python:
-    name: "Lint Python"
+  run_tests:
+    name: "Run tests"
 
     runs-on: ubuntu-latest
 
