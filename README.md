@@ -1,4 +1,5 @@
 [![PyPI](https://img.shields.io/pypi/v/nle-language-wrapper.svg)](https://pypi.org/project/nle-language-wrapper)
+[![codecov](https://codecov.io/gh/ngoodger/nle-language-wrapper/branch/main/graph/badge.svg)](https://codecov.io/gh/ngoodger/nle-language-wrapper)
 [![Downloads](https://static.pepy.tech/personalized-badge/nle-language-wrapper?period=total&units=abbreviation&left_color=grey&right_color=green&left_text=Downloads%20Total)](https://pepy.tech/project/nle-language-wrapper)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
