@@ -31,6 +31,8 @@ jobs:
         python-version: "3.9"
     - name: Clone repository
       uses: actions/checkout@v2
+      with:
+        submodules: recursive
     - name: Upgrade pip if necessary
       run: "pip install -q --upgrade pip"
     - name: Install build dependencies
