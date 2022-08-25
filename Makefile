@@ -21,7 +21,7 @@ format-python-check:
 		nle_language_wrapper/tests/
 	 
 format-cpp-check:
-	cpplint --filter -readability/braces src/main.cpp
+	clang-format --dry-run src/main.cpp --style=Google
 
 test:
 	pytest nle_language_wrapper/tests --cov .
