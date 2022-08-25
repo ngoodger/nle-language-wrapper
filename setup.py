@@ -41,7 +41,9 @@ class CMakeBuild(build_ext.build_ext):
             ["python", "-m", "setup", "build"], cwd=f"{source_path}/nle"
         )
         libnethack_path = list(pathlib.Path("./nle/build").glob("**/libnethack.so"))[0]
-        shutil.copy(libnethack_path, pathlib.Path("./nle_language_wrapper/libnethack.so"))
+        shutil.copy(
+            libnethack_path, pathlib.Path("./nle_language_wrapper/libnethack.so")
+        )
 
         subprocess.check_call(cmake_cmd, cwd=self.build_temp)
         subprocess.check_call(build_cmd, cwd=self.build_temp)
@@ -64,8 +66,7 @@ extras_deps = {
         "pytest>=7.1.2",
         "pytest-cov>=3.0.0",
         "pytest-mock>=3.7.0",
-        "pygame>=2.1.2"
-        "isort>=5.10.1",
+        "pygame>=2.1.2" "isort>=5.10.1",
     ],
     "agent": ["sample_factory>=1.121.4", "transformers>=4.17.0"],
 }
