@@ -156,6 +156,17 @@ Requires `python>=3.7` and `cmake>=3.15`.
 
 On Ubuntu you may also require additional dependencies, follow the steps at https://github.com/facebookresearch/nle#installation.
 
+### Google Colab setup
+The wrapper can be installed in Google Colab after installing the following dependencies
+```
+!sudo apt-get install -y build-essential autoconf libtool pkg-config \
+    python3-dev python3-pip python3-numpy git libncurses5-dev \
+    libzmq3-dev flex bison
+!git clone https://github.com/google/flatbuffers.git
+!cd flatbuffers && cmake -G "Unix Makefiles" && make -j2 && sudo make install
+!pip install cmake==3.15.3
+```
+
 ### Installation
 
 To use the environment you can install it directly from PyPI.
@@ -180,8 +191,9 @@ python -m setup develop
 
 The wrapper can be used simply by instantiating a base environment from [NLE](https://github.com/facebookresearch/nle) or [MiniHack](https://github.com/facebookresearch/minihack) and passing it to the wrapper constructor.
 ```
+import gym
 import nle
-from nle_language_wrapper import  NLELanguageWrapper
+from nle_language_wrapper import NLELanguageWrapper
 env = NLELanguageWrapper(gym.make("NetHackChallenge-v0"))
 obsv = env.reset()
 obsv, reward, done, info = env.step("wait")
