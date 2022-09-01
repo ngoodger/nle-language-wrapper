@@ -8,6 +8,8 @@
 
 Language Wrapper for the [Nethack Learning Environment (NLE)](https://github.com/facebookresearch/nle) and [MiniHack](https://github.com/facebookresearch/minihack)
 
+![Diagram](media/diagram.png?raw=true)
+
 ## Description
 This wrapper inherits from the [Gym Wrapper](https://github.com/openai/gym/blob/9e66399b4ef04c1534c003641802e2ac1363e8a6/gym/core.py#L286-L421) Class and translates the non-language observations from [NLE](https://github.com/facebookresearch/nle) tasks into similar language representations.  Actions can also be optionally provided in text form which are converted to the Discrete actions of the NLE.
 
