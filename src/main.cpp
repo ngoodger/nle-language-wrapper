@@ -1149,6 +1149,8 @@ py::bytes NLELanguageObsv::text_message(py::array_t<uint8_t> tty_chars) {
     }
     // End of more
     if (row_str.find("--More--") != std::string::npos) break;
+    // End on full stop
+    if (row_str.find(".") != std::string::npos) break;
   }
   return py::bytes(output);
 }

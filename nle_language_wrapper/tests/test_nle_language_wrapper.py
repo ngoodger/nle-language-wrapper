@@ -242,6 +242,25 @@ def test_message_more(fake_nle_env):
     assert obsv["text_message"] == expected_menu
 
 
+def test_message_close_map(fake_nle_env):
+    things_that_are_here = [" It's a wall. ", " "]
+
+    screen_map = [
+        "         -----------------------------------------|           ",
+        "         |               @                        |           ",
+    ]
+
+    # Fill with spaces for menu
+    tty_chars = strs_to_2d(things_that_are_here + screen_map, fill_value=32)
+
+    fake_nle_env.reset.return_value["tty_chars"] = tty_chars
+    dut = NLELanguageWrapper(fake_nle_env)
+    obsv = dut.reset()
+
+    expected_menu = "It's a wall."
+    assert obsv["text_message"] == expected_menu
+
+
 def test_create_env_real(real_nethack_env):
     dut = NLELanguageWrapper(real_nethack_env)
     dut.reset()
