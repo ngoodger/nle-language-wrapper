@@ -327,7 +327,7 @@ def test_obsv_fake(fake_nle_env):
     expected_cursor = "Yourself a monk"
     expected_inventory = (
         "a: a blessed +1 quarterstaff (weapon in hands)\n"
-        "b: an uncursed +0 cloak of magic resistance (being worn)\n"
+        "b: an uncursed +0 cloak of magic resistance (being worn)"
     )
     expected_message = (
         "Hello Agent, welcome to NetHack!  You are a neutral gnomish Caveman."
@@ -402,7 +402,7 @@ def test_multiple_obsv_fake(fake_nethack_multiple_monsters_env):
     obsv = dut.reset()
     expected_inventory = (
         "a: a blessed +1 quarterstaff (weapon in hands)\n"
-        "b: an uncursed +0 cloak of magic resistance (being worn)\n"
+        "b: an uncursed +0 cloak of magic resistance (being worn)"
     )
     expected_message = (
         "Hello Agent, welcome to NetHack!  You are a neutral gnomish Caveman."
@@ -426,7 +426,7 @@ def test_step_fake(fake_nle_env):
     obsv = dut.reset()
     expected_inventory = (
         "a: a blessed +1 quarterstaff (weapon in hands)\n"
-        "b: an uncursed +0 cloak of magic resistance (being worn)\n"
+        "b: an uncursed +0 cloak of magic resistance (being worn)"
     )
     expected_message = (
         "Hello Agent, welcome to NetHack!  You are a neutral gnomish Caveman."

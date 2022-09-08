@@ -910,8 +910,11 @@ py::bytes NLELanguageObsv::text_inventory(py::array_t<uint8_t> inv_strs,
   for (uint64_t i = 0; i < x; i++) {
     std::string inv_letter(1, inv_letters_data[i]);
     std::string inv_str(reinterpret_cast<char *>(&(inv_strs_data[i * y])));
-    if (inv_letters_data[i] == 0) break;
-    output += inv_letter + ": " + inv_str + "\n";
+    if (inv_letters_data[i] != 0) {
+      if (i > 0) output += "\n";
+      output += inv_letter + ": " + inv_str;
+    } else
+      break;
   }
   return py::bytes(output);
 }

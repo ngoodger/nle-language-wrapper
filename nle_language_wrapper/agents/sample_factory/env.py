@@ -43,7 +43,7 @@ class SampleFactoryNLELanguageEnv(gym.Env):
 
     def _convert_obsv_to_str(self, obsv):
         text_obsv = ""
-        text_obsv += f"Inventory:\n{obsv['text_inventory']}\n"
+        text_obsv += f"Inventory:\n{obsv['text_inventory']}\n\n"
         text_obsv += f"Stats:\n{obsv['text_blstats']}\n\n"
         text_obsv += f"Cursor:\n{obsv['text_cursor']}\n\n"
         text_obsv += f"Stats:\n{obsv['text_glyphs']}\n\n"
