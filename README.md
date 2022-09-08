@@ -158,7 +158,14 @@ Requires `python>=3.7` and `cmake>=3.15`.
 
 On Ubuntu you may also require additional dependencies, follow the steps at https://github.com/facebookresearch/nle#installation.
 
-### Google Colab setup
+### Installation
+
+To use the environment you can install it directly from PyPI.
+```
+pip install nle-language-wrapper
+```
+
+### Google Colab
 The wrapper can be installed in Google Colab after installing the following dependencies
 ```
 !sudo apt-get install -y build-essential autoconf libtool pkg-config \
@@ -169,12 +176,7 @@ The wrapper can be installed in Google Colab after installing the following depe
 !pip install cmake==3.15.3
 ```
 
-### Installation
-
-To use the environment you can install it directly from PyPI.
-```
-pip install nle-language-wrapper
-```
+For an example Google Colab notebook, see [NLE-Language-Wrapper-Example.ipynb](https://colab.research.google.com/drive/1xwjPu9UbCCHNM6ezLw86kjw67KXswt_O#scrollTo=WJYfMxSeADnB)
 
 ### Development
 
@@ -187,7 +189,6 @@ To update the library with changes to the C++ code recompile by running
 ```
 python -m setup develop
 ```
-
 
 ## Usage
 
