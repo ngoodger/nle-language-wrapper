@@ -341,27 +341,28 @@ def test_obsv_fake(fake_nle_env):
         "south, southwest, west, and northwest"
     )
     expected_text_blstats = (
-        "Strength:1/19\n"
-        "Dexterity:4\n"
-        "Constitution:5\n"
-        "Intelligence:6\n"
-        "Wisdom:7\n"
-        "Charisma:8\n"
-        "Depth:9\n"
-        "Gold:10\n"
-        "HP:11/12\n"
-        "Energy:1/13\n"
-        "AC:1\n"
-        "XP:7/10\n"
-        "Time:5\n"
-        "Position:66|14\n"
-        "Hunger:Fainting\nMonster Level:23\n"
-        "Encumbrance:Stressed\n"
-        "Dungeon Number:21\n"
-        "Level Number:10\n"
-        "Score:123\n"
-        "Alignment:Chaotic\n"
-        "Condition:Stoned Slimed Food Poisoning"
+        "Strength: 1/19\n"
+        "Dexterity: 4\n"
+        "Constitution: 5\n"
+        "Intelligence: 6\n"
+        "Wisdom: 7\n"
+        "Charisma: 8\n"
+        "Depth: 9\n"
+        "Gold: 10\n"
+        "HP: 11/12\n"
+        "Energy: 1/13\n"
+        "AC: 1\n"
+        "XP: 7/10\n"
+        "Time: 5\n"
+        "Position: 66|14\n"
+        "Hunger: Fainting\n"
+        "Monster Level: 23\n"
+        "Encumbrance: Stressed\n"
+        "Dungeon Number: 21\n"
+        "Level Number: 10\n"
+        "Score: 123\n"
+        "Alignment: Chaotic\n"
+        "Condition: Stoned Slimed Food Poisoning"
     )
 
     assert obsv["text_glyphs"] == expected_obsv
@@ -379,7 +380,7 @@ def test_blstats_condition_none(fake_nle_env):
     dut = NLELanguageWrapper(fake_nle_env)
     obsv = dut.reset()
 
-    expected_condition = "Condition:None"
+    expected_condition = "Condition: None"
 
     assert expected_condition in obsv["text_blstats"]
 
@@ -392,7 +393,7 @@ def test_blstats_condition_flying(fake_nle_env):
     dut = NLELanguageWrapper(fake_nle_env)
     obsv = dut.reset()
 
-    expected_condition = "Condition:Flying"
+    expected_condition = "Condition: Flying"
 
     assert expected_condition in obsv["text_blstats"]
 
