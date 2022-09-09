@@ -33,7 +33,7 @@ class NLELanguageWrapper(Wrapper):
         nethack_actions.MiscDirection.UP: ["up", "<"],
         nethack_actions.MiscDirection.DOWN: ["down", ">"],
         nethack_actions.MiscDirection.WAIT: ["wait", "."],
-        nethack_actions.MiscAction.MORE: ["more", "\r"],
+        nethack_actions.MiscAction.MORE: ["more", "\r", r"\r"],
         nethack_actions.Command.EXTCMD: ["extcmd", "#"],
         nethack_actions.Command.EXTLIST: ["extlist", "M-?"],
         nethack_actions.Command.ADJUST: ["adjust", "M-a"],
