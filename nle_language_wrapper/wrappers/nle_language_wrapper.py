@@ -11,7 +11,7 @@ class NLELanguageWrapper(Wrapper):
     def spec(self):
         return self.env.spec
 
-    nle_action_map = {
+    all_nle_action_map = {
         nethack_actions.UnsafeActions.HELP: ["help", "?"],
         nethack_actions.UnsafeActions.PREVMSG: ["previous message", "^p"],
         nethack_actions.CompassDirection.N: ["north", "k"],
@@ -141,11 +141,6 @@ class NLELanguageWrapper(Wrapper):
         nethack_actions.WizardCommand.WIZWISH: ["wizard wish", "^w"],
     }
 
-    action_map = {}
-    for k, v in nle_action_map.items():
-        for action_str in v:
-            action_map[action_str] = k
-
     REQUIRED_NLE_OBSV_KEYS = {
         "glyphs",
         "blstats",
@@ -168,15 +163,13 @@ class NLELanguageWrapper(Wrapper):
         Returns:
             (Enum): nle action
         """
-        if action not in self.action_map:
-            raise ValueError(f"Action {action} is not recognized.")
-        nle_action = self.action_map[action]
-        if nle_action not in self.nle_action_index_map:
+        if action not in self.action_str_enum_map:
             raise ValueError(
-                f"Action {str(nle_action)} is not supported for this environment."
+                f"Action {action} is not recognized or not supported for this environment"
             )
-        action_idx = self.nle_action_index_map[nle_action]
-        return action_idx
+        nle_action_enum = self.action_str_enum_map[action]
+        nle_action_idx = self.action_enum_index_map[nle_action_enum]
+        return nle_action_idx
 
     def nle_obsv_to_language(self, nle_obsv):
         """Translate NLE Observation into a language observation.
@@ -248,11 +241,21 @@ class NLELanguageWrapper(Wrapper):
         # assert observations are included
         self.use_language_action = use_language_action
         self.nle_language = NLELanguageObsv()
-        self.nle_action_index_map = {
-            nle_action: self.env._actions.index(nle_action)
-            for nle_action, _ in self.nle_action_map.items()
-            if nle_action in self.env._actions
-        }
+
+        # Build map for action string to NLE Action Enum
+        self.action_str_enum_map = {}
+        for nle_action_enum, action_strs in self.all_nle_action_map.items():
+            if nle_action_enum in self.env._actions:
+                for action_str in action_strs:
+                    self.action_str_enum_map[action_str] = nle_action_enum
+
+        # Build map for NLE Action Enum to NLE action index
+        self.action_enum_index_map = {}
+        for nle_action_enum, _ in self.all_nle_action_map.items():
+            if nle_action_enum in self.env._actions:
+                self.action_enum_index_map[nle_action_enum] = self.env._actions.index(
+                    nle_action_enum
+                )
 
         if self.use_language_action:
             self.action_space = spaces.Space()

@@ -215,7 +215,7 @@ def test_message_spell_menu(fake_nle_env):
     assert obsv["text_message"] == expected_menu
 
 
-def test_message_more(fake_nle_env):
+def test_message_more_end(fake_nle_env):
     things_that_are_here = [
         " Things that are here:      ",
         "a goblin corpse             ",
@@ -242,8 +242,8 @@ def test_message_more(fake_nle_env):
     assert obsv["text_message"] == expected_menu
 
 
-def test_message_close_map(fake_nle_env):
-    things_that_are_here = [" It's a wall. ", " "]
+def test_message_full_stop_end(fake_nle_env):
+    message = [" It's a wall. ", " "]
 
     screen_map = [
         "         -----------------------------------------|           ",
@@ -251,7 +251,7 @@ def test_message_close_map(fake_nle_env):
     ]
 
     # Fill with spaces for menu
-    tty_chars = strs_to_2d(things_that_are_here + screen_map, fill_value=32)
+    tty_chars = strs_to_2d(message + screen_map, fill_value=32)
 
     fake_nle_env.reset.return_value["tty_chars"] = tty_chars
     dut = NLELanguageWrapper(fake_nle_env)
@@ -303,8 +303,20 @@ def test_step_real(real_nethack_env):
 def test_step_invalid_action(real_nethack_env):
     dut = NLELanguageWrapper(real_nethack_env)
     dut.reset()
-    with pytest.raises(ValueError):
-        dut.step("divide by zero")
+    with pytest.raises(
+        ValueError, match="is not recognized or not supported for this environment"
+    ):
+        dut.step("invalid action")
+
+
+def test_action_actions_maps_reflect_valid_actions(fake_nle_env):
+    fake_nle_env._actions = [nethack_actions.CompassDirection.N]
+    dut = NLELanguageWrapper(fake_nle_env)
+    assert dut.action_enum_index_map == {nethack_actions.CompassDirection.N: 0}
+    assert dut.action_str_enum_map == {
+        "north": nethack_actions.CompassDirection.N,
+        "k": nethack_actions.CompassDirection.N,
+    }
 
 
 def test_step_valid_action_not_supported(real_nethack_env):
