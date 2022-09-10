@@ -1156,6 +1156,8 @@ py::bytes NLELanguageObsv::text_message(py::array_t<uint8_t> tty_chars) {
     if (row_str.find(".") != std::string::npos) break;
     // End on "]"
     if (row_str.find("]") != std::string::npos) break;
+    // End on ")"
+    if (row_str.find(")") != std::string::npos) break;
   }
   return py::bytes(output);
 }
