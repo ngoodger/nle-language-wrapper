@@ -165,7 +165,8 @@ class NLELanguageWrapper(Wrapper):
         """
         if action not in self.action_str_enum_map:
             raise ValueError(
-                f"Action {repr(action)} is not recognized or not supported for this environment"
+                f"Action {repr(action)} is not recognized "
+                "or not supported for this environment"
             )
         nle_action_enum = self.action_str_enum_map[action]
         nle_action_idx = self.action_enum_index_map[nle_action_enum]
