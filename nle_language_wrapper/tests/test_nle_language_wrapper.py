@@ -208,8 +208,10 @@ def test_message_spell_menu(fake_nle_env):
 
     expected_menu = (
         "Choose which spell to cast\n"
+        "\n"
         "Name                 Level Category     Fail Retention\n"
-        "a - healing                1   healing        0%      100%"
+        "a - healing                1   healing        0%      100%\n"
+        "(end)"
     )
     assert obsv["text_message"] == expected_menu
 
@@ -313,8 +315,10 @@ def test_message_multipage(fake_nle_env):
     obsv = dut.reset()
     expected_message = (
         "Extended Commands List\n"
+        "\n"
         "a - Hide commands that don't autocomplete (those not marked with [A])\n"
         ": - Search extended commands\n"
+        "\n"
         "Extended commands\n"
         "#                  perform an extended command\n"
         "?              [A] list all extended commands\n"
@@ -346,10 +350,12 @@ def test_message_takeoffall(fake_nle_env):
     obsv = dut.reset()
     expected_message = (
         "What type of things do you want to take off?\n"
+        "\n"
         "a - All worn types\n"
         "b - Weapons\n"
         "c - Armor\n"
-        "U - Items known to be Uncursed"
+        "U - Items known to be Uncursed\n"
+        "(end)"
     )
     assert obsv["text_message"] == expected_message
 
@@ -396,13 +402,25 @@ def test_filter_map_from_name(fake_nle_env):
     obsv = dut.reset()
     expected_message = (
         "What do you want to name?\n"
+        "\n"
         "m - a monster\n"
         "i - a particular object in inventory\n"
         "o - the type of an object in inventory\n"
         "f - the type of an object upon the floor\n"
         "d - the type of an object on discoveries list\n"
-        "a - record an annotation for the current level"
+        "a - record an annotation for the current level\n"
+        "(end)"
     )
+    assert obsv["text_message"] == expected_message
+
+
+def test_filter_map_travel(fake_nle_env):
+    message = ["doorway      ", "", "      ------------ ", "      |..........| "]
+    tty_chars = strs_to_2d(message, fill_value=32)
+    fake_nle_env.reset.return_value["tty_chars"] = tty_chars
+    dut = NLELanguageWrapper(fake_nle_env)
+    obsv = dut.reset()
+    expected_message = "doorway"
     assert obsv["text_message"] == expected_message
 
 

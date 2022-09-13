@@ -1129,9 +1129,9 @@ py::bytes NLELanguageObsv::text_message(py::array_t<uint8_t> tty_chars) {
   size_t rows = tty_chars_buffer.shape[0];
   size_t columns = tty_chars_buffer.shape[1];
   std::string output = "";
-  uint64_t blank_row_count = 0;
+  std::string first_row_str = "";
+  bool multipage_message = false;
 
-  bool multipage_message;
   std::string row_str(reinterpret_cast<char *>(&(tty_chars_data[0])), columns);
   size_t indent = row_str.find_first_not_of(' ');
   for (uint64_t row_idx = 0; row_idx < rows; row_idx++) {
@@ -1139,47 +1139,21 @@ py::bytes NLELanguageObsv::text_message(py::array_t<uint8_t> tty_chars) {
                             &(tty_chars_data[indent + (row_idx * columns)])),
                         columns - indent);
     row_str = trim(row_str);
-    if (row_str == "") continue;
-    output += row_str;
+    if (row_idx == 0) {
+      first_row_str = row_str;
+      if (first_row_str == "") return py::bytes("");
+    }
     size_t of_pos = row_str.find(" of ");
     multipage_message =
-        ((of_pos != std::string::npos) && (row_str[of_pos - 2] == '(') &&
-         (row_str[of_pos + 5] == ')')) ||
-        (row_str.find("--More--") != std::string::npos);
-    if (multipage_message)
-      break;
-    else
-      output += "\n";
+        (((of_pos != std::string::npos) && (row_str[of_pos - 2] == '(') &&
+          (row_str[of_pos + 5] == ')')) ||
+         (row_str.find("--More--") != std::string::npos) ||
+         (row_str.find("(end)") != std::string::npos));
+    output += row_str;
+    if (multipage_message) return py::bytes(output);
+    output += "\n";
   }
-  if (multipage_message) return py::bytes(output);
-
-  output = "";
-  for (uint64_t row_idx = 0; row_idx < rows; row_idx++) {
-    std::string row_str(
-        reinterpret_cast<char *>(&(tty_chars_data[indent + row_idx * columns])),
-        columns - indent);
-    row_str = trim(row_str);
-    // End of block
-    if (blank_row_count > 1 || row_str == "(end)") break;
-    // End of menu
-    if (row_str.find("(end)") != std::string::npos) break;
-    if (row_str.size() == 0)
-      blank_row_count++;
-    else {
-      if (row_idx > 0) {
-        output += "\n";
-      }
-      output += row_str;
-      blank_row_count = 0;
-    }
-    // End on "."
-    if (row_str.find(".") != std::string::npos) break;
-    // End on "]"
-    if (row_str.find("]") != std::string::npos) break;
-    // End on ")"
-    if (row_str.find(")") != std::string::npos) break;
-  }
-  return py::bytes(output);
+  return py::bytes(first_row_str);
 }
 
 }  // namespace nle_language_obsv
