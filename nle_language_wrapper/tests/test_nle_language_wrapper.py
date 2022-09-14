@@ -8,6 +8,7 @@ from nle.env import NLE
 from nle.nethack import actions as nethack_actions
 
 from nle_language_wrapper import NLELanguageWrapper
+from nle_language_wrapper.scripts import play
 
 
 def str_to_1d(string):
@@ -958,6 +959,11 @@ def test_wrapper_requires_all_keys(real_nethack_env):
         match=r"NLE environment missing required obsv key\(s\): {'glyphs'}",
     ):
         NLELanguageWrapper(real_nethack_env)
+
+
+def test_play(mocker):
+    with mocker.patch("builtins.input", return_value="north"):
+        play.main("NetHackChallenge-v0")
 
 
 def test_time_reset(real_nethack_env):
