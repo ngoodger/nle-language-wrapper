@@ -1,6 +1,7 @@
 import gym
 import minihack  # pylint: disable=unused-import
 import nle  # pylint: disable=unused-import
+from minihack.scripts.env_list import skip_envs_list
 
 from nle_language_wrapper import NLELanguageWrapper
 
@@ -105,7 +106,7 @@ if __name__ == "__main__":
         nle_env_names = [
             env_spec.id
             for env_spec in gym.envs.registry.all()
-            if "MiniHack" in env_spec.id
+            if "MiniHack" in env_spec.id and env_spec.id not in skip_envs_list
         ]
         nle_env_names.append("NetHackChallenge-v0")
         for i, env_name in enumerate(nle_env_names):
