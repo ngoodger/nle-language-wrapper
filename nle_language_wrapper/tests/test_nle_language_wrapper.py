@@ -385,6 +385,15 @@ def test_filter_map_from_conduct(fake_nle_env):
     assert obsv["text_message"] == expected_message
 
 
+def test_empty_tty_chars_returns_empty_message(fake_nle_env):
+    message = [" "]
+    tty_chars = strs_to_2d(message, fill_value=32)
+    fake_nle_env.reset.return_value["tty_chars"] = tty_chars
+    dut = NLELanguageWrapper(fake_nle_env)
+    obsv = dut.reset()
+    assert obsv["text_message"] == ""
+
+
 def test_filter_map_from_name(fake_nle_env):
     message = [
         "                              What do you want to name? ",

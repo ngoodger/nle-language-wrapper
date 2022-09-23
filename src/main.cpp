@@ -1129,20 +1129,18 @@ py::bytes NLELanguageObsv::text_message(py::array_t<uint8_t> tty_chars) {
   size_t rows = tty_chars_buffer.shape[0];
   size_t columns = tty_chars_buffer.shape[1];
   std::string output = "";
-  std::string first_row_str = "";
   bool multipage_message = false;
 
-  std::string row_str(reinterpret_cast<char *>(&(tty_chars_data[0])), columns);
-  size_t indent = row_str.find_first_not_of(' ');
+  std::string first_row_str(reinterpret_cast<char *>(&(tty_chars_data[0])),
+                            columns);
+  size_t indent = first_row_str.find_first_not_of(' ');
+  first_row_str = trim(first_row_str);
+  if (first_row_str == "") return py::bytes(first_row_str);
   for (uint64_t row_idx = 0; row_idx < rows; row_idx++) {
     std::string row_str(reinterpret_cast<char *>(
                             &(tty_chars_data[indent + (row_idx * columns)])),
                         columns - indent);
     row_str = trim(row_str);
-    if (row_idx == 0) {
-      first_row_str = row_str;
-      if (first_row_str == "") return py::bytes("");
-    }
     size_t of_pos = row_str.find(" of ");
     multipage_message =
         (((of_pos != std::string::npos) && (row_str[of_pos - 2] == '(') &&
