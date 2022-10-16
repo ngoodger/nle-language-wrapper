@@ -213,6 +213,22 @@ To update the library with changes to the C++ code recompile by running
 ```
 python -m setup develop
 ```
+The included Makefile defines useful targets for development.
+
+To run the test suite
+```
+make test
+```
+Format the code using `black`, `isort`, and `clang-format`
+```
+make format-python
+make format-cpp
+```
+Check the code formatting with `black`, `isort` and `clang-format`, and `pylint`
+```
+make format-python-check
+make format-cpp-check
+```
 
 ## Usage
 
