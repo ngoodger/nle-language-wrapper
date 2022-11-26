@@ -44,7 +44,6 @@ class CMakeBuild(build_ext.build_ext):
         shutil.copy(
             libnethack_path, pathlib.Path("./nle_language_wrapper/libnethack.so")
         )
-
         subprocess.check_call(cmake_cmd, cwd=self.build_temp)
         subprocess.check_call(build_cmd, cwd=self.build_temp)
         subprocess.check_call(install_cmd, cwd=self.build_temp)
@@ -89,7 +88,6 @@ if __name__ == "__main__":
         url="https://github.com/ngoodger/nle-language-wrapper",
         license="MIT License",
         packages=packages,
-        package_data={"": ["nle_language_wrapper/libnethack.so"]},
         include_package_data=True,
         ext_modules=[setuptools.Extension("nle_language_wrapper", sources=[])],
         cmdclass={"build_ext": CMakeBuild},

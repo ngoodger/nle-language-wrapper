@@ -1,3 +1,5 @@
+include nle_language_wrapper/libnethack.so
+
 include CMakeLists.txt
 recursive-include src *
 recursive-include pybind11 *
