@@ -211,6 +211,22 @@ class NLELanguageObsv {
       "MAXPCHARS",
   };
 
+  std::map<int64_t, std::string> condition_map = {
+      {BL_MASK_STONE, "Stoned"},
+      {BL_MASK_SLIME, "Slimed"},
+      {BL_MASK_STRNGL, "Strangled"},
+      {BL_MASK_FOODPOIS, "Food Poisoning"},
+      {BL_MASK_TERMILL, "Terminally Ill"},
+      {BL_MASK_BLIND, "Blind"},
+      {BL_MASK_DEAF, "Deaf"},
+      {BL_MASK_STUN, "Stunned"},
+      {BL_MASK_CONF, "Confused"},
+      {BL_MASK_HALLU, "Hallucinating"},
+      {BL_MASK_LEV, "Levitating"},
+      {BL_MASK_FLY, "Flying"},
+      {BL_MASK_RIDE, "Riding"},
+  };
+
   std::map<int64_t, std::string> encumberance_map{
       {UNENCUMBERED, "Unencumbered"}, {SLT_ENCUMBER, "Burdened"},
       {MOD_ENCUMBER, "Stressed"},     {HVY_ENCUMBER, "Strained"},
@@ -1012,28 +1028,35 @@ py::bytes NLELanguageObsv::text_blstats(py::array_t<int64_t> blstats) {
   std::string hunger_str = hunger_map[blstats_data[21]];
   std::string encumberance_str = encumberance_map[blstats_data[22]];
 
-  std::string condition;
+  std::map<int64_t, std::string> condition_map = {
+      {BL_MASK_STONE, "Stoned"},
+      {BL_MASK_SLIME, "Slimed"},
+      {BL_MASK_STRNGL, "Strangled"},
+      {BL_MASK_FOODPOIS, "Food Poisoning"},
+      {BL_MASK_TERMILL, "Terminally Ill"},
+      {BL_MASK_BLIND, "Blind"},
+      {BL_MASK_DEAF, "Deaf"},
+      {BL_MASK_STUN, "Stunned"},
+      {BL_MASK_CONF, "Confused"},
+      {BL_MASK_HALLU, "Hallucinating"},
+      {BL_MASK_LEV, "Levitating"},
+      {BL_MASK_FLY, "Flying"},
+      {BL_MASK_RIDE, "Riding"},
+  };
+
   std::vector<std::string> conditions;
-  if (blstats_data[25] & BL_MASK_STONE) conditions.push_back("Stoned");
-  if (blstats_data[25] & BL_MASK_SLIME) conditions.push_back("Slimed");
-  if (blstats_data[25] & BL_MASK_STRNGL) conditions.push_back("Strangled");
-  if (blstats_data[25] & BL_MASK_FOODPOIS)
-    conditions.push_back("Food Poisoning");
-  if (blstats_data[25] & BL_MASK_TERMILL)
-    conditions.push_back("Terminally Ill");
-  if (blstats_data[25] & BL_MASK_BLIND) conditions.push_back("Blind");
-  if (blstats_data[25] & BL_MASK_DEAF) conditions.push_back("Deaf");
-  if (blstats_data[25] & BL_MASK_STUN) conditions.push_back("Stunned");
-  if (blstats_data[25] & BL_MASK_CONF) conditions.push_back("Confused");
-  if (blstats_data[25] & BL_MASK_HALLU) conditions.push_back("Hallucinating");
-  if (blstats_data[25] & BL_MASK_LEV) conditions.push_back("Levitating");
-  if (blstats_data[25] & BL_MASK_FLY) conditions.push_back("Flying");
-  if (blstats_data[25] & BL_MASK_RIDE) conditions.push_back("Riding");
-  if (conditions.size() == 0)
+  for (const auto &[mask, condition] : condition_map) {
+    if (blstats_data[25] & mask) {
+      conditions.push_back(condition);
+    }
+  }
+
+  std::string condition;
+  if (conditions.empty()) {
     condition = "None";
-  else if (conditions.size() == 1)
+  } else if (conditions.size() == 1) {
     condition = conditions[0];
-  else if (conditions.size() > 1) {
+  } else {
     condition = conditions[0];
     for (auto it = ++conditions.begin(); it != conditions.end(); ++it) {
       condition += " " + *it;
