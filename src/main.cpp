@@ -1063,33 +1063,31 @@ py::bytes NLELanguageObsv::text_blstats(py::array_t<int64_t> blstats) {
     }
   }
 
-  std::string output =
-      ("Strength: " + std::to_string(blstats_data[3]) + "/" +
-       std::to_string(blstats_data[2]) + "\n" +
-       "Dexterity: " + std::to_string(blstats_data[4]) + "\n" +
-       "Constitution: " + std::to_string(blstats_data[5]) + "\n" +
-       "Intelligence: " + std::to_string(blstats_data[6]) + "\n" +
-       "Wisdom: " + std::to_string(blstats_data[7]) + "\n" +
-       "Charisma: " + std::to_string(blstats_data[8]) + "\n" +
-       "Depth: " + std::to_string(blstats_data[12]) + "\n" +
-       "Gold: " + std::to_string(blstats_data[13]) + "\n" +
-       "HP: " + std::to_string(blstats_data[10]) + "/" +
-       std::to_string(blstats_data[11]) + "\n" +
-       "Energy: " + std::to_string(blstats_data[14]) + "/" +
-       std::to_string(blstats_data[15]) + "\n" +
-       "AC: " + std::to_string(blstats_data[16]) + "\n" +
-       "XP: " + std::to_string(blstats_data[18]) + "/" +
-       std::to_string(blstats_data[19]) + "\n" +
-       "Time: " + std::to_string(blstats_data[20]) + "\n" +
-       "Position: " + std::to_string(blstats_data[0]) + "|" +
-       std::to_string(blstats_data[1]) + "\n" + "Hunger: " + hunger_str + "\n" +
-       "Monster Level: " + std::to_string(blstats_data[17]) + "\n" +
-       "Encumbrance: " + encumberance_str + "\n" +
-       "Dungeon Number: " + std::to_string(blstats_data[23]) + "\n" +
-       "Level Number: " + std::to_string(blstats_data[24]) + "\n" +
-       "Score: " + std::to_string(blstats_data[9]) + "\n" +
-       "Alignment: " + alignment_str + "\n" + "Condition: " + condition);
-  return py::bytes(output);
+  std::stringstream ss;
+  ss << "Strength: " << blstats_data[3] << "/" << blstats_data[2] << "\n"
+     << "Dexterity: " << blstats_data[4] << "\n"
+     << "Constitution: " << blstats_data[5] << "\n"
+     << "Intelligence: " << blstats_data[6] << "\n"
+     << "Wisdom: " << blstats_data[7] << "\n"
+     << "Charisma: " << blstats_data[8] << "\n"
+     << "Depth: " << blstats_data[12] << "\n"
+     << "Gold: " << blstats_data[13] << "\n"
+     << "HP: " << blstats_data[10] << "/" << blstats_data[11] << "\n"
+     << "Energy: " << blstats_data[14] << "/" << blstats_data[15] << "\n"
+     << "AC: " << blstats_data[16] << "\n"
+     << "XP: " << blstats_data[18] << "/" << blstats_data[19] << "\n"
+     << "Time: " << blstats_data[20] << "\n"
+     << "Position: " << blstats_data[0] << "|" << blstats_data[1] << "\n"
+     << "Hunger: " << hunger_str << "\n"
+     << "Monster Level: " << blstats_data[17] << "\n"
+     << "Encumbrance: " << encumberance_str << "\n"
+     << "Dungeon Number: " << blstats_data[23] << "\n"
+     << "Level Number: " << blstats_data[24] << "\n"
+     << "Score: " << blstats_data[9] << "\n"
+     << "Alignment: " << alignment_str << "\n"
+     << "Condition: " << condition;
+
+  return py::bytes(ss.str());
 }
 
 std::string NLELanguageObsv::trim(std::string input) {
