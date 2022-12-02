@@ -227,7 +227,7 @@ class NLELanguageObsv {
       {BL_MASK_RIDE, "Riding"},
   };
 
-  std::map<int64_t, std::string> encumberance_map{
+  std::map<int64_t, std::string> encumbrance_map{
       {UNENCUMBERED, "Unencumbered"}, {SLT_ENCUMBER, "Burdened"},
       {MOD_ENCUMBER, "Stressed"},     {HVY_ENCUMBER, "Strained"},
       {EXT_ENCUMBER, "Overtaxed"},    {OVERLOADED, "Overloaded"}};
@@ -1026,7 +1026,7 @@ py::bytes NLELanguageObsv::text_blstats(py::array_t<int64_t> blstats) {
 
   std::string alignment_str = alignment_map[blstats_data[26]];
   std::string hunger_str = hunger_map[blstats_data[21]];
-  std::string encumberance_str = encumberance_map[blstats_data[22]];
+  std::string encumbrance_str = encumbrance_map[blstats_data[22]];
 
   std::map<int64_t, std::string> condition_map = {
       {BL_MASK_STONE, "Stoned"},
@@ -1080,7 +1080,7 @@ py::bytes NLELanguageObsv::text_blstats(py::array_t<int64_t> blstats) {
      << "Position: " << blstats_data[0] << "|" << blstats_data[1] << "\n"
      << "Hunger: " << hunger_str << "\n"
      << "Monster Level: " << blstats_data[17] << "\n"
-     << "Encumbrance: " << encumberance_str << "\n"
+     << "Encumbrance: " << encumbrance_str << "\n"
      << "Dungeon Number: " << blstats_data[23] << "\n"
      << "Level Number: " << blstats_data[24] << "\n"
      << "Score: " << blstats_data[9] << "\n"
