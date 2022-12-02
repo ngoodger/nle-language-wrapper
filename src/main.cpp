@@ -60,6 +60,11 @@ class NLELanguageObsv {
   py::bytes text_message(py::array_t<uint8_t> tty_chars);
 
  private:
+  std::map<int64_t, std::string> alignment_map{{A_NONE, "None"},
+                                               {A_LAWFUL, "Lawful"},
+                                               {A_NEUTRAL, "Neutral"},
+                                               {A_CHAOTIC, "Chaotic"}};
+
   const std::set<std::string> cmap_floor{
       "room floor",
       "dark room floor",
@@ -205,6 +210,17 @@ class NLELanguageObsv {
       "explosion bottom right",
       "MAXPCHARS",
   };
+
+  std::map<int64_t, std::string> encumberance_map{
+      {UNENCUMBERED, "Unencumbered"}, {SLT_ENCUMBER, "Burdened"},
+      {MOD_ENCUMBER, "Stressed"},     {HVY_ENCUMBER, "Strained"},
+      {EXT_ENCUMBER, "Overtaxed"},    {OVERLOADED, "Overloaded"}};
+
+  std::map<int64_t, std::string> hunger_map{
+      {SATIATED, "Satiated"}, {NOT_HUNGRY, "Not Hungry"}, {HUNGRY, "Hungry"},
+      {WEAK, "Weak"},         {FAINTING, "Fainting"},     {FAINTED, "Fainted"},
+      {STARVED, "Starved"}};
+
   std::string Im_unused;
   void build_fullscreen_view_glyph_map();
   std::list<std::tuple<std::string, std::string, std::string>>
@@ -992,68 +1008,9 @@ py::bytes NLELanguageObsv::text_blstats(py::array_t<int64_t> blstats) {
   py::buffer_info blstats_buffer = blstats.request();
   int64_t *blstats_data = reinterpret_cast<int64_t *>(blstats_buffer.ptr);
 
-  std::string alignment_str;
-  switch (blstats_data[26]) {
-    case A_NONE:
-      alignment_str = "None";
-      break;
-    case A_LAWFUL:
-      alignment_str = "Lawful";
-      break;
-    case A_NEUTRAL:
-      alignment_str = "Neutral";
-      break;
-    case A_CHAOTIC:
-      alignment_str = "Chaotic";
-      break;
-  }
-
-  std::string hunger_str;
-  switch (blstats_data[21]) {
-    case SATIATED:
-      hunger_str = "Satiated";
-      break;
-    case NOT_HUNGRY:
-      hunger_str = "Not Hungry";
-      break;
-    case HUNGRY:
-      hunger_str = "Hungry";
-      break;
-    case WEAK:
-      hunger_str = "Weak";
-      break;
-    case FAINTING:
-      hunger_str = "Fainting";
-      break;
-    case FAINTED:
-      hunger_str = "Fainted";
-      break;
-    case STARVED:
-      hunger_str = "Starved";
-      break;
-  }
-
-  std::string encumberance_str;
-  switch (blstats_data[22]) {
-    case UNENCUMBERED:
-      encumberance_str = "Unemcumbered";
-      break;
-    case SLT_ENCUMBER:
-      encumberance_str = "Burdened";
-      break;
-    case MOD_ENCUMBER:
-      encumberance_str = "Stressed";
-      break;
-    case HVY_ENCUMBER:
-      encumberance_str = "Strained";
-      break;
-    case EXT_ENCUMBER:
-      encumberance_str = "Oveexrtaxed";
-      break;
-    case OVERLOADED:
-      encumberance_str = "Overloaded";
-      break;
-  }
+  std::string alignment_str = alignment_map[blstats_data[26]];
+  std::string hunger_str = hunger_map[blstats_data[21]];
+  std::string encumberance_str = encumberance_map[blstats_data[22]];
 
   std::string condition;
   std::vector<std::string> conditions;
