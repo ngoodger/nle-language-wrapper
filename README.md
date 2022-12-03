@@ -41,7 +41,7 @@ Time:1
 Position:46|14
 Hunger:Not Hungry
 Monster Level:0
-Encumbrance:Unemcumbered
+Encumbrance:Unencumbered
 Dungeon Number:0
 Level Number:1
 Score:0
