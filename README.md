@@ -158,7 +158,8 @@ Actions are by default text actions like `wait`, `apply`, `north` ect. The corre
 
 ### Supported platforms
 
-The wrapper is tested on macOS 12.5 and Ubuntu 20.04.
+The wrapper has been tested on macOS 12.5, Ubuntu 20.04 natively, and on Windows using WSL.\
+Note: The agent component uses sample factory which does not support Windows WSL and requires a PyTorch supported GPU.
 
 ### Requirements
 
