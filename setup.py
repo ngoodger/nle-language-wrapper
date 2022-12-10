@@ -67,6 +67,7 @@ extras_deps = {
         "pytest-mock>=3.7.0",
         "pygame>=2.1.2",
         "isort>=5.10.1",
+        "numpy>=1.21.0",
     ],
     "agent": ["sample_factory>=1.121.4", "transformers>=4.17.0"],
 }
@@ -94,10 +95,9 @@ if __name__ == "__main__":
         setup_requires=["pybind11>=2.9"],
         install_requires=[
             "pybind11>=2.9",
-            "numpy>=1.21.0",
             "gym>=0.15,<=0.23",
             "nle==0.8.1",
-            "minihack>=0.1.3",
+            "minihack==0.1.3",
         ],
         tests_require=["pytest>=7.0.1"],
         extras_require=extras_deps,
