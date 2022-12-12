@@ -381,7 +381,7 @@ NLELanguageObsv::compress_by_glyph(
     std::string direction_string = std::get<2>(*it);
 
     std::pair<std::string, std::string> glyph_distance_string_pair =
-        std::make_pair(glyph_string, distance_string);
+        std::pair{glyph_string, distance_string};
     // We use the vector to retain the sorted order.
     if (map_glyh_distance_to_directions.find(glyph_distance_string_pair) ==
         map_glyh_distance_to_directions.end()) {
@@ -429,7 +429,7 @@ NLELanguageObsv::compress_by_glyph(
     }
     if (multiple_in_direction.size() > 0) {
       std::pair<std::string, std::string> glyph_distance_string_pair =
-          std::make_pair(noun_plural_lookup[glyph_string], distance_string);
+          std::pair{noun_plural_lookup[glyph_string], distance_string};
       new_vector_glyh_distance_to_directions.push_back(
           glyph_distance_string_pair);
       new_map_glyh_distance_to_directions[glyph_distance_string_pair] =
@@ -483,7 +483,7 @@ std::pair<int, int> NLELanguageObsv::local_glyph_to_global(int glyph_idx,
   int glyph_relative_start_0_x = glyph_relative_x + DUNGEON_WIDTH;
   int glyph_relative_start_0_y = glyph_relative_y + DUNGEON_HEIGHT;
 
-  return std::make_pair(glyph_relative_start_0_x, glyph_relative_start_0_y);
+  return std::pair{glyph_relative_start_0_x, glyph_relative_start_0_y};
 }
 
 std::list<std::tuple<std::string, std::string, std::string>>
@@ -997,7 +997,7 @@ std::pair<std::string, std::string> NLELanguageObsv::pos_to_str(int x, int y) {
   std::string distance_str = str_offset;
   std::string direction_str =
       position_descriptor_y + position_descriptor_x + diagonal;
-  return std::make_pair(distance_str, direction_str);
+  return std::pair{distance_str, direction_str};
 }
 
 std::string NLELanguageObsv::offset_to_str(int offset) {
