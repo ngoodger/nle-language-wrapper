@@ -117,7 +117,7 @@ def fake_nle_env(mocker):
     info = None
     nle_env.reset = mocker.MagicMock(return_value=obsv)
     nle_env.step = mocker.MagicMock(return_value=(obsv, reward, done, info))
-    nle_env._actions = [nethack_actions.CompassDirection.N]
+    nle_env.actions = [nethack_actions.CompassDirection.N]
     nle_env.observation_space = spaces.Dict(
         {
             "glyphs": spaces.Space(),
@@ -170,7 +170,7 @@ def fake_nethack_multiple_monsters_env(mocker):
     info = None
     nle_env.reset = mocker.MagicMock(return_value=obsv)
     nle_env.step = mocker.MagicMock(return_value=(obsv, reward, done, info))
-    nle_env._actions = [nethack_actions.CompassDirection.N]
+    nle_env.actions = [nethack_actions.CompassDirection.N]
     nle_env.observation_space = spaces.Dict(
         {
             "glyphs": spaces.Space(),
@@ -483,7 +483,7 @@ def test_step_invalid_action(real_nethack_env):
 
 
 def test_action_actions_maps_reflect_valid_actions(fake_nle_env):
-    fake_nle_env._actions = [nethack_actions.CompassDirection.N]
+    fake_nle_env.actions = [nethack_actions.CompassDirection.N]
     dut = NLELanguageWrapper(fake_nle_env)
     assert dut.action_enum_index_map == {nethack_actions.CompassDirection.N: 0}
     assert dut.action_str_enum_map == {
@@ -493,15 +493,15 @@ def test_action_actions_maps_reflect_valid_actions(fake_nle_env):
 
 
 def test_step_valid_action_not_supported(real_nethack_env):
-    real_nethack_env._actions = [
+    real_nethack_env.actions = [
         action
-        for action in list(real_nethack_env._actions)
+        for action in list(real_nethack_env.actions)
         if action != nethack_actions.Command.TRAVEL
     ]
 
     dut = NLELanguageWrapper(real_nethack_env)
     dut.reset()
-    dut.env._actions = list(dut.env._actions)
+    dut.env.actions = list(dut.env.actions)
     with pytest.raises(ValueError):
         dut.step("travel")
 

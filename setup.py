@@ -96,8 +96,8 @@ if __name__ == "__main__":
         install_requires=[
             "pybind11>=2.9",
             "gym>=0.15,<=0.23",
-            "nle==0.8.1",
-            "minihack==0.1.3",
+            "nle==0.9.0",
+            "minihack==0.1.4",
         ],
         tests_require=["pytest>=7.0.1"],
         extras_require=extras_deps,
