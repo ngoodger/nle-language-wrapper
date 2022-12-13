@@ -26,7 +26,7 @@ class SampleFactoryNLELanguageEnv(gym.Env):
         self.env = NLELanguageWrapper(self.nle_env, use_language_action=False)
         self.action_space = self.env.action_space
         self.tokenizer = RobertaTokenizerFast.from_pretrained(
-            "distilroberta-base", truncation_side="left", local_files_only=True
+            "distilroberta-base", truncation_side="left"
         )
 
     # We use caching to avoid re-tokenizing observations that are already seen.
