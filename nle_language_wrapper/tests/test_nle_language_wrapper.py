@@ -547,7 +547,7 @@ def test_obsv_fake(fake_nle_env):
         "Level Number: 10\n"
         "Score: 123\n"
         "Alignment: Chaotic\n"
-        "Condition: Stoned Slimed Food Poisoning"
+        "Condition: Food Poisoning Slimed Stoned"
     )
 
     assert obsv["text_glyphs"] == expected_obsv

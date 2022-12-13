@@ -13,6 +13,7 @@
 #include <iostream>
 #include <list>
 #include <map>
+#include <unordered_map>
 #include <memory>
 #include <set>
 #include <string>
@@ -60,7 +61,7 @@ class NLELanguageObsv {
   py::bytes text_message(py::array_t<uint8_t> tty_chars);
 
  private:
-  std::map<int64_t, std::string> alignment_map{{A_NONE, "None"},
+  std::unordered_map<int64_t, std::string> alignment_map{{A_NONE, "None"},
                                                {A_LAWFUL, "Lawful"},
                                                {A_NEUTRAL, "Neutral"},
                                                {A_CHAOTIC, "Chaotic"}};
@@ -211,7 +212,7 @@ class NLELanguageObsv {
       "MAXPCHARS",
   };
 
-  std::map<int64_t, std::string> condition_map = {
+  std::unordered_map<int64_t, std::string> condition_map = {
       {BL_MASK_STONE, "Stoned"},
       {BL_MASK_SLIME, "Slimed"},
       {BL_MASK_STRNGL, "Strangled"},
@@ -227,17 +228,16 @@ class NLELanguageObsv {
       {BL_MASK_RIDE, "Riding"},
   };
 
-  std::map<int64_t, std::string> encumbrance_map{
+  std::unordered_map<int64_t, std::string> encumbrance_map{
       {UNENCUMBERED, "Unencumbered"}, {SLT_ENCUMBER, "Burdened"},
       {MOD_ENCUMBER, "Stressed"},     {HVY_ENCUMBER, "Strained"},
       {EXT_ENCUMBER, "Overtaxed"},    {OVERLOADED, "Overloaded"}};
 
-  std::map<int64_t, std::string> hunger_map{
+  std::unordered_map<int64_t, std::string> hunger_map{
       {SATIATED, "Satiated"}, {NOT_HUNGRY, "Not Hungry"}, {HUNGRY, "Hungry"},
       {WEAK, "Weak"},         {FAINTING, "Fainting"},     {FAINTED, "Fainted"},
       {STARVED, "Starved"}};
 
-  std::string Im_unused;
   void build_fullscreen_view_glyph_map();
   std::list<std::tuple<std::string, std::string, std::string>>
   sort_by_distance_direction(
@@ -265,7 +265,7 @@ class NLELanguageObsv {
 
   std::array<std::string, MAX_GLYPH> fullscreen_view_glyph_map;
   std::array<std::string, MAX_GLYPH> visual_view_glyph_map;
-  std::map<std::string, std::string> noun_plural_lookup;
+  std::unordered_map<std::string, std::string> noun_plural_lookup;
   std::array<
       std::array<std::pair<std::string, std::string>, DUNGEON_HEIGHT * 2>,
       DUNGEON_WIDTH * 2>
@@ -399,7 +399,7 @@ NLELanguageObsv::compress_by_glyph(
     std::string distance_string = it->second;
     std::vector<std::string> direction_strings =
         map_glyh_distance_to_directions[*it];
-    std::map<std::string, int> direction_freq;
+    std::unordered_map<std::string, int> direction_freq;
     std::vector<std::string> direction_freq_order;
     std::vector<std::string> multiple_in_direction;
     std::vector<std::string> single_direction_strings;
@@ -1028,7 +1028,7 @@ py::bytes NLELanguageObsv::text_blstats(py::array_t<int64_t> blstats) {
   std::string hunger_str = hunger_map[blstats_data[21]];
   std::string encumbrance_str = encumbrance_map[blstats_data[22]];
 
-  std::map<int64_t, std::string> condition_map = {
+  std::unordered_map<int64_t, std::string> condition_map = {
       {BL_MASK_STONE, "Stoned"},
       {BL_MASK_SLIME, "Slimed"},
       {BL_MASK_STRNGL, "Strangled"},
