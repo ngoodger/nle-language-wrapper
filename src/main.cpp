@@ -13,10 +13,10 @@
 #include <iostream>
 #include <list>
 #include <map>
-#include <unordered_map>
 #include <memory>
 #include <set>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "include/display.h"
@@ -61,10 +61,11 @@ class NLELanguageObsv {
   py::bytes text_message(py::array_t<uint8_t> tty_chars);
 
  private:
-  std::unordered_map<int64_t, std::string> alignment_map{{A_NONE, "None"},
-                                               {A_LAWFUL, "Lawful"},
-                                               {A_NEUTRAL, "Neutral"},
-                                               {A_CHAOTIC, "Chaotic"}};
+  std::unordered_map<int64_t, std::string> alignment_map{
+      {A_NONE, "None"},
+      {A_LAWFUL, "Lawful"},
+      {A_NEUTRAL, "Neutral"},
+      {A_CHAOTIC, "Chaotic"}};
 
   const std::set<std::string> cmap_floor{
       "room floor",
@@ -367,11 +368,11 @@ NLELanguageObsv::compress_by_glyph(
         glyph_distance_direction) {
   std::list<std::tuple<std::string, std::string, std::string>>
       new_glyph_distance_direction;
-  std::vector<std::pair<std::string, std::string>>
+  std::list<std::pair<std::string, std::string>>
       vector_glyh_distance_to_directions;
-  std::vector<std::pair<std::string, std::string>>
+  std::list<std::pair<std::string, std::string>>
       new_vector_glyh_distance_to_directions;
-  std::map<std::pair<std::string, std::string>, std::vector<std::string>>
+  std::map<std::pair<std::string, std::string>, std::list<std::string>>
       map_glyh_distance_to_directions;
 
   for (auto it = glyph_distance_direction.begin();
@@ -390,19 +391,19 @@ NLELanguageObsv::compress_by_glyph(
     map_glyh_distance_to_directions[glyph_distance_string_pair].push_back(
         direction_string);
   }
-  std::map<std::pair<std::string, std::string>, std::vector<std::string>>
+  std::map<std::pair<std::string, std::string>, std::list<std::string>>
       new_map_glyh_distance_to_directions;
 
   for (auto it = vector_glyh_distance_to_directions.begin();
        it != vector_glyh_distance_to_directions.end(); it++) {
     std::string glyph_string = it->first;
     std::string distance_string = it->second;
-    std::vector<std::string> direction_strings =
+    std::list<std::string> direction_strings =
         map_glyh_distance_to_directions[*it];
     std::unordered_map<std::string, int> direction_freq;
-    std::vector<std::string> direction_freq_order;
-    std::vector<std::string> multiple_in_direction;
-    std::vector<std::string> single_direction_strings;
+    std::list<std::string> direction_freq_order;
+    std::list<std::string> multiple_in_direction;
+    std::list<std::string> single_direction_strings;
 
     // For the current glyph & distance check the frequency of each direction.
     for (auto direction_it = direction_strings.begin();
@@ -443,26 +444,28 @@ NLELanguageObsv::compress_by_glyph(
        it != vector_glyh_distance_to_directions.end(); ++it) {
     std::string glyph_string = it->first;
     std::string distance_string = it->second;
-    std::vector<std::string> direction_strings =
+    std::list<std::string> direction_strings =
         map_glyh_distance_to_directions[*it];
 
     if (direction_strings.size() == 1) {
-      std::string first_direction = direction_strings[0];
+      std::string first_direction = direction_strings.front();
       new_glyph_distance_direction.push_back(
           make_tuple(glyph_string, distance_string, first_direction));
     } else if (direction_strings.size() == 2) {
-      std::string first_direction = direction_strings[0];
-      std::string second_direction = direction_strings[1];
+      std::string first_direction = direction_strings.front();
+      std::string second_direction = *std::next(direction_strings.begin());
       std::string new_direction = first_direction + " and " + second_direction;
       new_glyph_distance_direction.push_back(
           make_tuple(glyph_string, distance_string, new_direction));
     } else {
-      std::string last_direction =
-          direction_strings[direction_strings.size() - 1];
-      std::string new_direction = "";
-      new_direction += direction_strings[0];
-      for (uint64_t i = 1; i < direction_strings.size() - 1; i++) {
-        new_direction += ", " + direction_strings[i];
+      std::string last_direction = direction_strings.back();
+      std::string new_direction = direction_strings.front();
+      direction_strings.pop_back();
+      direction_strings.pop_front();
+      for (auto direction_strings_it = direction_strings.begin();
+           direction_strings_it != direction_strings.end();
+           ++direction_strings_it) {
+        new_direction += ", " + *direction_strings_it;
       }
       new_direction += ", and " + last_direction;
       new_glyph_distance_direction.push_back(
