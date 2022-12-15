@@ -4,7 +4,7 @@
   "experiment": "nle_language_agent",
   "experiments_root": null,
   "help": false,
-  "train_dir": "/home/ngoodger/Development/nle-language-wrapper/train_dir",
+  "train_dir": "./train_dir",
   "device": "gpu",
   "seed": null,
   "save_every_sec": 120,
