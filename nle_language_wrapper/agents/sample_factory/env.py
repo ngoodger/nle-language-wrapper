@@ -2,8 +2,10 @@ from functools import lru_cache
 
 import gym
 import numpy as np
+import torch
 from sample_factory.envs.env_registry import global_env_registry
 from transformers import RobertaTokenizerFast
+
 
 from nle_language_wrapper import NLELanguageWrapper
 
@@ -16,6 +18,9 @@ class SampleFactoryNLELanguageEnv(gym.Env):
 
         self.cfg = cfg
         self.observation_space = gym.spaces.Dict()
+        self.observation_space.spaces["obs"] = gym.spaces.Box(
+            0, 1000000, shape=(1,), dtype=np.int32
+        )
         self.observation_space.spaces["input_ids"] = gym.spaces.Box(
             0, 1000000, shape=(self.cfg["max_token_length"],), dtype=np.int32
         )
@@ -39,6 +44,8 @@ class SampleFactoryNLELanguageEnv(gym.Env):
             truncation=True,
             max_length=self.cfg["max_token_length"],
         )
+        # Sample factory insists on normalizing obs key.
+        tokens.data["obs"] = torch.tensor(0)
         return tokens.data
 
     def _convert_obsv_to_str(self, obsv):
