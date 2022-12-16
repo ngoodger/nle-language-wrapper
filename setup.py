@@ -62,6 +62,7 @@ extras_deps = {
     "dev": [
         "black>=22.6.0",
         "flake8>=4.0.1",
+        "pylint>=2.15.8",
         "pytest>=7.1.2",
         "pytest-cov>=3.0.0",
         "pytest-mock>=3.7.0",
@@ -72,7 +73,8 @@ extras_deps = {
     "agent": [
         "sample_factory>=1.121.4",
         "transformers>=4.17.0",
-        "torch@https://download.pytorch.org/whl/cu111/torch-1.9.1%2Bcu111-cp39-cp39-linux_x86_64.whl",
+        "torch@https://download.pytorch.org/whl/cu111/"
+        "torch-1.9.1%2Bcu111-cp39-cp39-linux_x86_64.whl",
     ],
 }
 

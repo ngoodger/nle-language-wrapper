@@ -44,7 +44,7 @@ class SampleFactoryNLELanguageEnv(gym.Env):
             max_length=self.cfg["max_token_length"],
         )
         # Sample factory insists on normalizing obs key.
-        tokens.data["obs"] = torch.tensor(0)
+        tokens.data["obs"] = torch.zeros(1)
         return tokens.data
 
     def _convert_obsv_to_str(self, obsv):

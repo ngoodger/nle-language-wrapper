@@ -17,6 +17,7 @@ known_third_party = ["nle"]
 
 [tool.pylint.messages_control]
 max-line-length = 88
+generated-members="torch.*"
 disable = [
   "missing-function-docstring",
   "missing-module-docstring",
