@@ -69,7 +69,7 @@ extras_deps = {
         "isort>=5.10.1",
         "numpy>=1.21.0",
     ],
-    "agent": ["sample_factory>=1.121.4", "transformers>=4.17.0"],
+    "agent": ["sample_factory>=1.121.4", "transformers>=4.17.0", "torch@https://download.pytorch.org/whl/cu111/torch-1.9.1%2Bcu111-cp39-cp39-linux_x86_64.whl"],
 }
 
 if __name__ == "__main__":
