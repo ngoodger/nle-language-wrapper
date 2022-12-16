@@ -6,7 +6,6 @@ import torch
 from sample_factory.envs.env_registry import global_env_registry
 from transformers import RobertaTokenizerFast
 
-
 from nle_language_wrapper import NLELanguageWrapper
 
 
