@@ -104,6 +104,7 @@ if __name__ == "__main__":
             "gym>=0.15,<=0.23",
             "nle==0.9.0",
             "minihack==0.1.4",
+            "gym-minigrid==1.1.0",
         ],
         tests_require=["pytest>=7.0.1"],
         extras_require=extras_deps,
