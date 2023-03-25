@@ -209,7 +209,6 @@ def test_message_spell_menu(fake_nle_env):
 
     expected_menu = (
         "Choose which spell to cast\n"
-        "\n"
         "Name                 Level Category     Fail Retention\n"
         "a - healing                1   healing        0%      100%\n"
         "(end)"
@@ -316,10 +315,8 @@ def test_message_multipage(fake_nle_env):
     obsv = dut.reset()
     expected_message = (
         "Extended Commands List\n"
-        "\n"
         "a - Hide commands that don't autocomplete (those not marked with [A])\n"
         ": - Search extended commands\n"
-        "\n"
         "Extended commands\n"
         "#                  perform an extended command\n"
         "?              [A] list all extended commands\n"
@@ -351,7 +348,6 @@ def test_message_takeoffall(fake_nle_env):
     obsv = dut.reset()
     expected_message = (
         "What type of things do you want to take off?\n"
-        "\n"
         "a - All worn types\n"
         "b - Weapons\n"
         "c - Armor\n"
@@ -394,6 +390,24 @@ def test_empty_tty_chars_returns_empty_message(fake_nle_env):
     assert obsv["text_message"] == ""
 
 
+def test_death_message(fake_nle_env):
+    message = [
+        ""
+        + "No  Points     Name                                                   Hp [max] \n"
+        "\n"
+        "0  Agent-Cav-Hum-Mal-Law died in The Dungeons of Doom on            \n"
+        "\n"
+        "level 1.  Burned by molten lava.                        -  [16]"
+    ]
+    tty_chars = strs_to_2d(message, fill_value=32)
+    fake_nle_env.reset.return_value["tty_chars"] = tty_chars
+    dut = NLELanguageWrapper(fake_nle_env)
+    obsv = dut.reset()
+    assert obsv["text_message"] == (
+        "No  Points     Name                                                   Hp [max] \n\n0  Agent-Cav-Hum-Mal-Law died in The Dungeons of Doom on            \n\nlevel 1.  Burned by molten lava.                        -  [16]"
+    )
+
+
 def test_filter_map_from_name(fake_nle_env):
     message = [
         "                              What do you want to name? ",
@@ -412,7 +426,6 @@ def test_filter_map_from_name(fake_nle_env):
     obsv = dut.reset()
     expected_message = (
         "What do you want to name?\n"
-        "\n"
         "m - a monster\n"
         "i - a particular object in inventory\n"
         "o - the type of an object in inventory\n"
@@ -558,7 +571,6 @@ def test_obsv_fake(fake_nle_env):
 
 
 def test_blstats_condition_none(fake_nle_env):
-
     # Set condition to None.
     fake_nle_env.reset.return_value["blstats"][25] = 0
 
@@ -571,7 +583,6 @@ def test_blstats_condition_none(fake_nle_env):
 
 
 def test_blstats_condition_flying(fake_nle_env):
-
     # Set condition to Flying.
     fake_nle_env.reset.return_value["blstats"][25] = 2048
 
@@ -958,7 +969,7 @@ def test_plural_lava(fake_nle_env):
 
 def test_wrapper_only_works_with_nle_envs():
     with pytest.raises(AssertionError, match=r"Only NLE environments are supported"):
-        NLELanguageWrapper(gym.make("CartPole-v0"))
+        NLELanguageWrapper(gym.make("CartPole-v1"))
 
 
 def test_wrapper_requires_all_keys(real_nethack_env):

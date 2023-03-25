@@ -10,11 +10,9 @@ from nle_language_wrapper import NLELanguageWrapper
 
 
 class SampleFactoryNLELanguageEnv(gym.Env):
-
     LRU_CACHE_SIZE = 1000
 
     def __init__(self, cfg):
-
         self.cfg = cfg
         self.observation_space = gym.spaces.Dict()
         self.observation_space.spaces["obs"] = gym.spaces.Box(

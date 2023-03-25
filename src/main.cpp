@@ -1114,23 +1114,42 @@ py::bytes NLELanguageObsv::text_message(py::array_t<uint8_t> tty_chars) {
 
   std::string first_row_str(reinterpret_cast<char *>(&(tty_chars_data[0])),
                             columns);
+  std::string second_row_str(
+      reinterpret_cast<char *>(&(tty_chars_data[1 * columns])), columns);
   size_t indent = first_row_str.find_first_not_of(' ');
   first_row_str = trim(first_row_str);
-  if (first_row_str == "") return py::bytes(first_row_str);
+  second_row_str = trim(second_row_str);
+
+  if (first_row_str == "" && second_row_str == "")
+    return py::bytes(first_row_str);
+  // If we see the points header or the top ten list message!
+  bool death_screen = (second_row_str.find("Points") != std::string::npos | second_row_str.find("list!") != std::string::npos);
+  uint64_t blank_row_count = 0;
+
   for (uint64_t row_idx = 0; row_idx < rows; row_idx++) {
     std::string row_str(reinterpret_cast<char *>(
                             &(tty_chars_data[indent + (row_idx * columns)])),
                         columns - indent);
     row_str = trim(row_str);
+    if (row_str == "")
+      blank_row_count++;
+    else
+      blank_row_count = 0;
+
     size_t of_pos = row_str.find(" of ");
     multipage_message =
+        // End of multiline page ending in something like (1 of 5)
         (((of_pos != std::string::npos) && (row_str[of_pos - 2] == '(') &&
           (row_str[of_pos + 5] == ')')) ||
+         // End of multiline page ending in --More--
          (row_str.find("--More--") != std::string::npos) ||
+         // End of multiline page ending in (end)
          (row_str.find("(end)") != std::string::npos));
-    output += row_str;
+    if (row_str != "") output += row_str;
     if (multipage_message) return py::bytes(output);
-    output += "\n";
+    if (row_str != "") output += "\n";
+    // Death screen does not have an end marker so we have to count blank lines
+    if (death_screen && blank_row_count > 1) return py::bytes(output);
   }
   return py::bytes(first_row_str);
 }

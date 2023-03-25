@@ -27,6 +27,7 @@ def main(nethack_env_name):
     obsv = env.reset()
     total_reward = 0.0
     shown_help = False
+    done = False
 
     while True:
         output = ""
@@ -39,6 +40,8 @@ def main(nethack_env_name):
             output += "\n"
         print(output)
         print("------")
+        if done:
+            return total_reward
         valid_action = False
         while not valid_action:
             if not shown_help:
@@ -93,8 +96,6 @@ def main(nethack_env_name):
                     _,
                 ) = env.step(action)
                 total_reward += reward
-                if done:
-                    return total_reward
                 valid_action = True
             except ValueError as exception:
                 print(exception)
