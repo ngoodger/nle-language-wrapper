@@ -1123,7 +1123,8 @@ py::bytes NLELanguageObsv::text_message(py::array_t<uint8_t> tty_chars) {
   if (first_row_str == "" && second_row_str == "")
     return py::bytes(first_row_str);
   // If we see the points header or the top ten list message!
-  bool death_screen = (second_row_str.find("Points") != std::string::npos | second_row_str.find("list!") != std::string::npos);
+  bool death_screen = (second_row_str.find("Points") != std::string::npos |
+                       second_row_str.find("list!") != std::string::npos);
   uint64_t blank_row_count = 0;
 
   for (uint64_t row_idx = 0; row_idx < rows; row_idx++) {
