@@ -2,6 +2,7 @@
 [![codecov](https://codecov.io/gh/ngoodger/nle-language-wrapper/branch/main/graph/badge.svg)](https://codecov.io/gh/ngoodger/nle-language-wrapper)
 [![Downloads](https://static.pepy.tech/personalized-badge/nle-language-wrapper?period=total&units=abbreviation&left_color=grey&right_color=green&left_text=Downloads%20Total)](https://pepy.tech/project/nle-language-wrapper)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![DOI](https://zenodo.org/badge/510003556.svg)](https://zenodo.org/badge/latestdoi/510003556)
 
 # Nethack Learning Environment Language Wrapper
 
