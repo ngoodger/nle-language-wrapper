@@ -313,3 +313,15 @@ python nle_language_wrapper/agents/sample_factory/train.py \
 ## Licence
 
 MIT License
+
+## Citation
+
+If you use Nethack Learning Environment Language Wrapper in any of your work, kindly cite:
+```
+@article{goodger2023nethack,
+  title={A NetHack Learning Environment Language Wrapper for Autonomous Agents},
+  author={Goodger, Nikolaj and Vamplew, Peter and Foale, Cameron and Dazeley, Richard},
+  year={2023},
+  publisher={Ubiquity Press}
+}
+```
