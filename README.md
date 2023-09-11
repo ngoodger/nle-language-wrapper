@@ -319,9 +319,12 @@ MIT License
 If you use Nethack Learning Environment Language Wrapper in any of your work, kindly cite:
 ```
 @article{goodger2023nethack,
-  title={A NetHack Learning Environment Language Wrapper for Autonomous Agents},
-  author={Goodger, Nikolaj and Vamplew, Peter and Foale, Cameron and Dazeley, Richard},
-  year={2023},
-  publisher={Ubiquity Press}
+author = {Goodger, Nikolaj and Vamplew, Peter and Foale, Cameron and Dazeley, Richard},
+year = {2023},
+month = {06},
+title = {A NetHack Learning Environment Language Wrapper for Autonomous Agents},
+volume = {11},
+journal = {Journal of Open Research Software},
+doi = {10.5334/jors.444}
 }
 ```
