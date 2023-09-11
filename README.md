@@ -155,8 +155,6 @@ Actions are by default text actions like `wait`, `apply`, `north` ect. The corre
 
 ## Getting Started
 
-`ssh player@35.208.244.22` to immediately try out the wrapper using a MiniHack or NethackChallenge Task using the included [play.py](nle_language_wrapper/scripts/play.py).
-
 ### Supported platforms
 
 The wrapper has been tested on macOS 12.5, Ubuntu 20.04 natively, and on Windows using WSL.\
