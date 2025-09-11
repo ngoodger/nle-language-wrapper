@@ -1,3 +1,57 @@
+[project]
+name = "nle-language-wrapper"
+version = "1.0.0a"
+description = "Language Wrapper for the NetHack Learning Environment (NLE)"
+authors = [{ name = "Nikolaj Goodger", email = "ngoodger@example.com" }]
+readme = "README.md"
+keywords = ["nle", "language", "wrapper"]
+requires-python = ">=3.8"
+classifiers=[
+    "License :: OSI Approved :: MIT License",
+    "Development Status :: 2 - Pre-Alpha",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: C++",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Games/Entertainment",
+]
+dependencies = [
+    "nle @ git+https://github.com/jbcoe/nle-nethack.git@88a8da68dbd95e55ae6dbdd2fd2f1810bbad8207",
+    "minihack>=0.1.4",
+    "gym>=0.15,<=0.23",
+]
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+Homepage = "https://github.com/ngoodger/nle-language-wrapper"
+
+[dependency-groups]
+"dev"= [
+    "black>=22.6.0",
+    "flake8>=4.0.1",
+    "pylint>=2.15.8",
+    "pytest>=7.1.2",
+    "pytest-cov>=3.0.0",
+    "pytest-mock>=3.7.0",
+    "pygame>=2.1.2",
+    "isort>=5.10.1",
+    "numpy>=1.21.0",
+]
+
+# [project.optional-dependencies]
+# "agent" = [
+#     "sample_factory>=1.121.4",
+#     "transformers>=4.17.0",
+#     "torch@https://download.pytorch.org/whl/cu111/",
+#     "torch-1.9.1%2Bcu111-cp39-cp39-linux_x86_64.whl",
+# ]
+
 [tool.black]
 line-length = 88
 target-version = ['py37']
@@ -29,10 +83,19 @@ disable = [
   "wrong-import-order"
   ]
 
-
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel"
-]
-build-backend = "setuptools.build_meta"
+requires = ["scikit-build-core>=0.10", "pybind11>=2.2", "wheel", "setuptools-scm"]
+build-backend = "scikit_build_core.build"
+
+[tool.scikit-build]
+wheel.packages = ["nle_language_wrapper"]
+cmake.build-type = "Release"
+cmake.args = ["-DCMAKE_POLICY_VERSION_MINIMUM=3.5"]
+[tool.scikit-build.editable]
+mode = "redirect"
+
+[tool.scikit-build.metadata.version]
+provider = "scikit_build_core.metadata.setuptools_scm"
+
+[tool.pytest.ini_options]
+testpaths = ["nle_language_wrapper/tests"]

@@ -12,11 +12,9 @@ on:
       - main
     paths:
       - "nle_language_wrapper/**.py"
-      - "setup.py"
   pull_request:
     paths:
       - "nle_language_wrapper/**.py"
-      - "setup.py"
 
 jobs:
   check_python:

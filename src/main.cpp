@@ -8,6 +8,7 @@
 
 #include <array>
 #include <cassert>
+#include <cstdint>
 #include <cstring>
 #include <deque>
 #include <iostream>
@@ -19,13 +20,13 @@
 #include <unordered_map>
 #include <vector>
 
-#include "include/display.h"
+#include "display.h"
 
 // "digit" is declared in both Python's longintrepr.h and NetHack's extern.h.
 #define digit nethack_digit
 
 extern "C" {
-#include "include/hack.h"
+#include "hack.h"
 }
 
 namespace py = pybind11;
@@ -113,7 +114,7 @@ class NLELanguageObsv {
       "vertical raised drawbridge",
       "horizontal raised drawbridge",
   };
-  const char *cmap_lookup[100]{
+  const char* cmap_lookup[100]{
       "dark area",
       "vertical wall",
       "horizontal wall",
@@ -254,15 +255,15 @@ class NLELanguageObsv {
   std::string offset_to_str(int offset);
   int diagonal_distance(int dx, int dy);
   std::list<std::tuple<std::string, std::string, std::string>> fullscreen_view(
-      int16_t *glyphs_data, int64_t *blstats_data);
+      int16_t* glyphs_data, int64_t* blstats_data);
   std::list<std::tuple<std::string, std::string, std::string>> visual_view(
-      int16_t *glyphs_data, int64_t *blstats_data);
+      int16_t* glyphs_data, int64_t* blstats_data);
   std::pair<int, int> local_glyph_to_global(int glyph_idx, int player_x,
                                             int player_y);
   std::string trim(std::string input);
   std::list<std::tuple<std::string, std::string, std::string>> ray_march(
       DIRECTION direction, int64_t player_x, int64_t player_y,
-      int16_t *glyphs_data);
+      int16_t* glyphs_data);
 
   std::array<std::string, MAX_GLYPH> fullscreen_view_glyph_map;
   std::array<std::string, MAX_GLYPH> visual_view_glyph_map;
@@ -524,7 +525,7 @@ NLELanguageObsv::sort_by_distance_direction(
 
 std::list<std::tuple<std::string, std::string, std::string>>
 NLELanguageObsv::ray_march(DIRECTION direction, int64_t player_x,
-                           int64_t player_y, int16_t *glyphs_data) {
+                           int64_t player_y, int16_t* glyphs_data) {
   std::list<std::tuple<std::string, std::string, std::string>>
       glyph_distance_direction;
   std::string glyph_string;
@@ -602,7 +603,7 @@ NLELanguageObsv::ray_march(DIRECTION direction, int64_t player_x,
 }
 
 std::list<std::tuple<std::string, std::string, std::string>>
-NLELanguageObsv::fullscreen_view(int16_t *glyphs_data, int64_t *blstats_data) {
+NLELanguageObsv::fullscreen_view(int16_t* glyphs_data, int64_t* blstats_data) {
   int64_t player_x = blstats_data[0];
   int64_t player_y = blstats_data[1];
 
@@ -652,7 +653,7 @@ NLELanguageObsv::fullscreen_view(int16_t *glyphs_data, int64_t *blstats_data) {
 }
 
 std::list<std::tuple<std::string, std::string, std::string>>
-NLELanguageObsv::visual_view(int16_t *glyphs_data, int64_t *blstats_data) {
+NLELanguageObsv::visual_view(int16_t* glyphs_data, int64_t* blstats_data) {
   int64_t player_x = blstats_data[0];
   int64_t player_y = blstats_data[1];
 
@@ -693,7 +694,7 @@ void NLELanguageObsv::build_visual_view_glyph_map() {
 void NLELanguageObsv::build_fullscreen_view_glyph_map() {
   for (int16_t glyph = 0; glyph < MAX_GLYPH; glyph++) {
     if (glyph >= GLYPH_STATUE_OFF) {
-      struct permonst *monster = &mons[glyph_to_mon(glyph)];
+      struct permonst* monster = &mons[glyph_to_mon(glyph)];
       fullscreen_view_glyph_map[glyph] =
           +monster->mname + std::string(" statue");
     } else if (glyph >= GLYPH_WARNING_OFF) {
@@ -819,22 +820,22 @@ void NLELanguageObsv::build_fullscreen_view_glyph_map() {
           break;
       }
     } else if (glyph >= GLYPH_RIDDEN_OFF) {
-      struct permonst *monster = &mons[glyph_to_mon(glyph)];
+      struct permonst* monster = &mons[glyph_to_mon(glyph)];
       fullscreen_view_glyph_map[glyph] =
           std::string("ridden ") + monster->mname;
     } else if (glyph >= GLYPH_BODY_OFF) {
       int64_t monster_idx = glyph - GLYPH_BODY_OFF;
-      struct permonst *monster = &mons[monster_idx];
+      struct permonst* monster = &mons[monster_idx];
       fullscreen_view_glyph_map[glyph] =
           monster->mname + std::string(" corpse");
     } else if (glyph >= GLYPH_DETECT_OFF) {
-      struct permonst *monster = &mons[glyph_to_mon(glyph)];
+      struct permonst* monster = &mons[glyph_to_mon(glyph)];
       fullscreen_view_glyph_map[glyph] =
           std::string("detected ") + monster->mname;
     } else if (glyph >= GLYPH_INVIS_OFF) {
       fullscreen_view_glyph_map[glyph] = "invisible creature";
     } else if (glyph >= GLYPH_PET_OFF) {
-      struct permonst *monster = &mons[glyph_to_mon(glyph)];
+      struct permonst* monster = &mons[glyph_to_mon(glyph)];
       fullscreen_view_glyph_map[glyph] = std::string("tame ") + monster->mname;
     } else {
       fullscreen_view_glyph_map[glyph] = (mons[glyph_to_mon(glyph)].mname);
@@ -849,9 +850,9 @@ py::bytes NLELanguageObsv::text_cursor(py::array_t<int16_t> glyphs,
   py::buffer_info blstats_buffer = blstats.request();
   py::buffer_info tty_cursor_buffer = tty_cursor.request();
 
-  int16_t *glyphs_data = reinterpret_cast<int16_t *>(glyphs_buffer.ptr);
-  int64_t *blstats_data = reinterpret_cast<int64_t *>(blstats_buffer.ptr);
-  int64_t *tty_cursor_data = reinterpret_cast<int64_t *>(tty_cursor_buffer.ptr);
+  int16_t* glyphs_data = reinterpret_cast<int16_t*>(glyphs_buffer.ptr);
+  int64_t* blstats_data = reinterpret_cast<int64_t*>(blstats_buffer.ptr);
+  int64_t* tty_cursor_data = reinterpret_cast<int64_t*>(tty_cursor_buffer.ptr);
 
   int64_t player_x = blstats_data[0];
   int64_t player_y = blstats_data[1];
@@ -898,8 +899,8 @@ py::bytes NLELanguageObsv::text_glyphs(py::array_t<int16_t> glyphs,
   py::buffer_info glyphs_buffer = glyphs.request();
   py::buffer_info blstats_buffer = blstats.request();
 
-  int16_t *glyphs_data = reinterpret_cast<int16_t *>(glyphs_buffer.ptr);
-  int64_t *blstats_data = reinterpret_cast<int64_t *>(blstats_buffer.ptr);
+  int16_t* glyphs_data = reinterpret_cast<int16_t*>(glyphs_buffer.ptr);
+  int64_t* blstats_data = reinterpret_cast<int64_t*>(blstats_buffer.ptr);
 
   std::list<std::tuple<std::string, std::string, std::string>>
       glyph_distance_direction;
@@ -934,9 +935,9 @@ py::bytes NLELanguageObsv::text_inventory(py::array_t<uint8_t> inv_strs,
                                           py::array_t<uint8_t> inv_letters) {
   py::buffer_info inv_strs_buffer = inv_strs.request();
   py::buffer_info inv_letters_buffer = inv_letters.request();
-  uint8_t *inv_strs_data = reinterpret_cast<uint8_t *>(inv_strs_buffer.ptr);
-  uint8_t *inv_letters_data =
-      reinterpret_cast<uint8_t *>(inv_letters_buffer.ptr);
+  uint8_t* inv_strs_data = reinterpret_cast<uint8_t*>(inv_strs_buffer.ptr);
+  uint8_t* inv_letters_data =
+      reinterpret_cast<uint8_t*>(inv_letters_buffer.ptr);
   size_t x = inv_strs_buffer.shape[0];
   size_t y = inv_strs_buffer.shape[1];
 
@@ -944,7 +945,7 @@ py::bytes NLELanguageObsv::text_inventory(py::array_t<uint8_t> inv_strs,
 
   for (uint64_t i = 0; i < x; i++) {
     std::string inv_letter(1, inv_letters_data[i]);
-    std::string inv_str(reinterpret_cast<char *>(&(inv_strs_data[i * y])));
+    std::string inv_str(reinterpret_cast<char*>(&(inv_strs_data[i * y])));
     if (inv_letters_data[i] != 0) {
       if (i > 0) output += "\n";
       output += inv_letter + ": " + inv_str;
@@ -1025,7 +1026,7 @@ int NLELanguageObsv::diagonal_distance(int dx, int dy) {
 
 py::bytes NLELanguageObsv::text_blstats(py::array_t<int64_t> blstats) {
   py::buffer_info blstats_buffer = blstats.request();
-  int64_t *blstats_data = reinterpret_cast<int64_t *>(blstats_buffer.ptr);
+  int64_t* blstats_data = reinterpret_cast<int64_t*>(blstats_buffer.ptr);
 
   std::string alignment_str = alignment_map[blstats_data[26]];
   std::string hunger_str = hunger_map[blstats_data[21]];
@@ -1048,7 +1049,7 @@ py::bytes NLELanguageObsv::text_blstats(py::array_t<int64_t> blstats) {
   };
 
   std::vector<std::string> conditions;
-  for (const auto &[mask, condition] : condition_map) {
+  for (const auto& [mask, condition] : condition_map) {
     if (blstats_data[25] & mask) {
       conditions.push_back(condition);
     }
@@ -1105,17 +1106,17 @@ std::string NLELanguageObsv::trim(std::string input) {
 
 py::bytes NLELanguageObsv::text_message(py::array_t<uint8_t> tty_chars) {
   py::buffer_info tty_chars_buffer = tty_chars.request();
-  uint8_t *tty_chars_data = reinterpret_cast<uint8_t *>(tty_chars_buffer.ptr);
+  uint8_t* tty_chars_data = reinterpret_cast<uint8_t*>(tty_chars_buffer.ptr);
 
   size_t rows = tty_chars_buffer.shape[0];
   size_t columns = tty_chars_buffer.shape[1];
   std::string output = "";
   bool multipage_message = false;
 
-  std::string first_row_str(reinterpret_cast<char *>(&(tty_chars_data[0])),
+  std::string first_row_str(reinterpret_cast<char*>(&(tty_chars_data[0])),
                             columns);
   std::string second_row_str(
-      reinterpret_cast<char *>(&(tty_chars_data[1 * columns])), columns);
+      reinterpret_cast<char*>(&(tty_chars_data[1 * columns])), columns);
   size_t indent = first_row_str.find_first_not_of(' ');
   first_row_str = trim(first_row_str);
   second_row_str = trim(second_row_str);
@@ -1123,12 +1124,12 @@ py::bytes NLELanguageObsv::text_message(py::array_t<uint8_t> tty_chars) {
   if (first_row_str == "" && second_row_str == "")
     return py::bytes(first_row_str);
   // If we see the points header or the top ten list message!
-  bool death_screen = (second_row_str.find("Points") != std::string::npos |
+  bool death_screen = (second_row_str.find("Points") != std::string::npos ||
                        second_row_str.find("list!") != std::string::npos);
   uint64_t blank_row_count = 0;
 
   for (uint64_t row_idx = 0; row_idx < rows; row_idx++) {
-    std::string row_str(reinterpret_cast<char *>(
+    std::string row_str(reinterpret_cast<char*>(
                             &(tty_chars_data[indent + (row_idx * columns)])),
                         columns - indent);
     row_str = trim(row_str);

@@ -68,15 +68,15 @@ def test_action_actions_maps_reflect_valid_actions(fake_nle_env):
 
 
 def test_step_valid_action_not_supported(real_nethack_env):
-    real_nethack_env.actions = [
+    real_nethack_env._actions = [
         action
-        for action in list(real_nethack_env.actions)
+        for action in list(real_nethack_env._actions)
         if action != nethack_actions.Command.TRAVEL
     ]
 
     dut = NLELanguageWrapper(real_nethack_env)
     dut.reset()
-    dut.env.actions = list(dut.env.actions)
+    dut.env._actions = list(dut.env._actions)
     with pytest.raises(ValueError):
         dut.step("travel")
 

@@ -232,7 +232,9 @@ class NLELanguageWrapper(Wrapper):
             use_language_action(bool): Use language action or discrete integer actions
         """
         super().__init__(env)
-        assert isinstance(env, NLE), "Only NLE environments are supported"
+        assert isinstance(
+            env, NLE
+        ), f"Only NLE environments are supported {env} {type(env)}"
         missing_obsv_keys = self.REQUIRED_NLE_OBSV_KEYS.difference(
             env.observation_space.spaces.keys()
         )
@@ -245,16 +247,17 @@ class NLELanguageWrapper(Wrapper):
 
         # Build map for action string to NLE Action Enum
         self.action_str_enum_map = {}
+
         for nle_action_enum, action_strs in self.all_nle_action_map.items():
-            if nle_action_enum in self.env.actions:
+            if nle_action_enum in self.env._actions:
                 for action_str in action_strs:
                     self.action_str_enum_map[action_str] = nle_action_enum
 
         # Build map for NLE Action Enum to NLE action index
         self.action_enum_index_map = {}
         for nle_action_enum, _ in self.all_nle_action_map.items():
-            if nle_action_enum in self.env.actions:
-                self.action_enum_index_map[nle_action_enum] = self.env.actions.index(
+            if nle_action_enum in self.env._actions:
+                self.action_enum_index_map[nle_action_enum] = self.env._actions.index(
                     nle_action_enum
                 )
 

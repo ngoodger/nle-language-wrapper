@@ -85,7 +85,7 @@ def fake_nle_env(mocker):
     info = None
     nle_env.reset = mocker.MagicMock(return_value=obsv)
     nle_env.step = mocker.MagicMock(return_value=(obsv, reward, done, info))
-    nle_env.actions = [nethack_actions.CompassDirection.N]
+    nle_env._actions = [nethack_actions.CompassDirection.N]
     nle_env.observation_space = spaces.Dict(
         {
             "glyphs": spaces.Space(),
@@ -138,7 +138,7 @@ def fake_nethack_multiple_monsters_env(mocker):
     info = None
     nle_env.reset = mocker.MagicMock(return_value=obsv)
     nle_env.step = mocker.MagicMock(return_value=(obsv, reward, done, info))
-    nle_env.actions = [nethack_actions.CompassDirection.N]
+    nle_env._actions = [nethack_actions.CompassDirection.N]
     nle_env.observation_space = spaces.Dict(
         {
             "glyphs": spaces.Space(),
